@@ -31,4 +31,8 @@ router.get('/student',(req, res)=>{
     res.render('addStudent');
 })
 
+router.get('/createConcert',(req, res) =>{
+    res.render('createConcert')
+})
+
 module.exports = router;
