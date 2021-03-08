@@ -30,5 +30,10 @@ router.get('/album/detail',(req, res)=>{
 router.get('/student',(req, res)=>{
     res.render('addStudent');
 })
-
+router.get('/viewStudent',(req, res)=>{
+    res.render('studentManagement')
+})
+router.get('/routine',(req, res)=>{
+    res.render('routine')
+})
 module.exports = router;
