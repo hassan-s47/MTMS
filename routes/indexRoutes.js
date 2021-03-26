@@ -1,6 +1,9 @@
 const express = require('express');
 const teacherController=require('../controllers/teacherController');
+const loginController = require('../controllers/loginController');
 const router = express.Router();
+
+
 router.get('/teacher',(req, res)=>{
     res.render('teacher')
 })
@@ -8,12 +11,18 @@ router.get('/dashboard',(req, res)=>{
     res.render('dashboard')
 })
 
-router.get('/login',(req, res)=>{
+router.get('/',(req, res)=>{
     res.render('login');
 })
+
+router.post('/login',loginController.login)
+
 router.get('/register',(req, res)=>{
     res.render('register');
 })
+
+router.post('/register',loginController.register)
+
 router.get('/calender',(req, res)=>{
     res.render('calender');
 })

@@ -1,5 +1,5 @@
 module.exports = {
-    dburi : 'mongodb+srv://hstech:babayaga@nodetuts.wfpko.mongodb.net/node-tut?retryWrites=true&w=majority',
+    dburi : 'mongodb+srv://matrix:matrix123@cluster0.h2dzm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
     SESSION_OUT : 30 * 86400 * 1000,
     SESSION_NAME: 'sid',
     SESSION_SECRET: 'secret',  
