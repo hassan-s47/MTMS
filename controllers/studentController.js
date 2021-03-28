@@ -23,6 +23,8 @@ function isEmpty(obj) {
 }
 const addStudent=async(req, res)=>{
     console.log(req.file)
+
+    console.log(req.session.user)
     var obj = {
         name: req.body.name,
         email: req.body.email,
@@ -32,6 +34,7 @@ const addStudent=async(req, res)=>{
         signinDate: req.body.signinDate,
         instrumentModel: req.body.instrumentModel,
         semCount: req.body.semCount,
+        teacher: req.session.user,
        
         img: { 
             data: fs.readFileSync(path.join('./public/uploads/' + req.file.filename)), 
@@ -50,7 +53,7 @@ const addStudent=async(req, res)=>{
 
 }
 const showStudent= async (req,res)=>{
-    Student.find({}, (err, items) => { 
+    Student.find({teacher:req.session.user}, (err, items) => { 
         if (err) { 
             console.log(err); 
         } 
