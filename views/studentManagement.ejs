@@ -22,7 +22,7 @@
                             
                                <div class="col-md-10"></div>
                                <div class="col-md-2">
-                                  <a href="/student"> <button type="button" class="btn btn-dark btn-block"><i class="fa fa-plus"></i>Add Student</button></a>
+                                  <a href="/addStudent"> <button type="button" class="btn btn-dark btn-block"><i class="fa fa-plus"></i>Add Student</button></a>
                                </div>
                                </div>
                             <div class="row" >
@@ -54,30 +54,17 @@
 
                            
                             <div class="row" style="margin-top:4px;">
+                                <% items.forEach(function(image) { %> 
                                 <div class="col-lg-4">
                                     <div class="card m-b-20">
                                         <div class="card-body">
 
                                             <div class="media">
-                                                <img class="d-flex mr-3 rounded-circle img-thumbnail thumb-lg" src="assets/images/users/avatar-2.jpg" alt="Generic placeholder image">
+                                                <img src="data:image/<%=image.img.contentType%>;base64,<%=image.img.data.toString('base64')%>" class="d-flex mr-3 rounded-circle img-thumbnail thumb-lg">
                                                 <div class="media-body">
-                                                    <h5 class="mt-0 font-18 mb-1">Pauline I. Bird</h5>
-                                                    <p class="text-muted font-14">pauline@net.pk</p>
+                                                    <h5 class="mt-0 font-18 mb-1"><%= image.name %></h5>
+                                                    <p class="text-muted font-14"><%= image.email %></p>
 
-                                                    <!-- <ul class="social-links list-inline mb-0">
-                                                        <li class="list-inline-item">
-                                                            <a title="" data-placement="top" data-toggle="tooltip" class="tooltips" href="#" data-original-title="Facebook"><i class="fa fa-facebook"></i></a>
-                                                        </li>
-                                                        <li class="list-inline-item">
-                                                            <a title="" data-placement="top" data-toggle="tooltip" class="tooltips" href="#" data-original-title="Twitter"><i class="fa fa-twitter"></i></a>
-                                                        </li>
-                                                        <li class="list-inline-item">
-                                                            <a title="" data-placement="top" data-toggle="tooltip" class="tooltips" href="#" data-original-title="1234567890"><i class="fa fa-phone"></i></a>
-                                                        </li>
-                                                        <li class="list-inline-item">
-                                                            <a title="" data-placement="top" data-toggle="tooltip" class="tooltips" href="#" data-original-title="@skypename"><i class="fa fa-skype"></i></a>
-                                                        </li>
-                                                    </ul> -->
 
                                                 </div>
                                             </div>
@@ -85,7 +72,7 @@
                                         </div>
                                     </div>
                                 </div> <!-- end col -->
-
+                                <% }) %> 
                                 <div class="col-lg-4">
                                     <div class="card m-b-20">
                                         <div class="card-body">

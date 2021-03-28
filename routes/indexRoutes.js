@@ -1,9 +1,11 @@
 const express = require('express');
 const teacherController=require('../controllers/teacherController');
 const loginController = require('../controllers/loginController');
+const studentController = require('../controllers/studentController');
 const router = express.Router();
 
-
+router.post('/addStudent',studentController.upload.single('img'),
+studentController.addStudent)
 router.get('/teacher',(req, res)=>{
     res.render('teacher')
 })
@@ -23,6 +25,7 @@ router.get('/register',(req, res)=>{
 
 router.post('/register',loginController.register)
 
+
 router.get('/calender',(req, res)=>{
     res.render('calender');
 })
@@ -36,16 +39,10 @@ router.get('/album/detail',(req, res)=>{
     res.render('albumDetails');
 })
 
-router.get('/student',(req, res)=>{
-    res.render('addStudent');
+router.get('/student', studentController.showStudent)
+router.get('/addStudent',(req, res)=>{
+    res.render('addStudent')
 })
-router.get('/viewStudent',(req, res)=>{
-    res.render('studentManagement')
-})
-router.get('/routine',(req, res)=>{
-    res.render('routine')
-})
-
 router.get('/createConcert',(req, res) =>{
     res.render('createConcert')
 })
