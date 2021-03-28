@@ -52,6 +52,10 @@ const login = async (req, res) => {
             
             if(flag)
                 {
+                    req.session.user = result._id;
+                    req.session.fname = result.fname;
+                    req.session.lname = result.lname;
+                    req.session.email = result.email;
                     res.json({msg: "", status: "success"});
                 }
             

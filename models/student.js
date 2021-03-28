@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 
 const StudentSchema = new Schema({
     name :{ type: String, required:true},
+    teacher: {type: Schema.Types.ObjectId,ref:'user', required:true},
     email: { type: String, required:true,unique:true },
     gender:{ type: String, required:true },
     dob:{ type: String, required:true },

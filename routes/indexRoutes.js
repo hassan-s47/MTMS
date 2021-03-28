@@ -4,8 +4,8 @@ const loginController = require('../controllers/loginController');
 const studentController = require('../controllers/studentController');
 const router = express.Router();
 
-router.post('/addStudent',studentController.upload.single('img'),
-studentController.addStudent)
+router.post('/addStudent',studentController.upload.single('img'),studentController.addStudent)
+
 router.get('/teacher',(req, res)=>{
     res.render('teacher')
 })
@@ -40,9 +40,11 @@ router.get('/album/detail',(req, res)=>{
 })
 
 router.get('/student', studentController.showStudent)
+
 router.get('/addStudent',(req, res)=>{
     res.render('addStudent')
 })
+
 router.get('/createConcert',(req, res) =>{
     res.render('createConcert')
 })
