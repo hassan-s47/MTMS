@@ -39,6 +39,10 @@ router.get('/album/detail',(req, res)=>{
     res.render('albumDetails');
 })
 
+router.get('/routine',(req, res) => {
+    res.render('routine');
+})
+
 router.get('/student', studentController.showStudent)
 
 router.get('/addStudent',(req, res)=>{
