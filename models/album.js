@@ -10,12 +10,9 @@ const AlbumSchema = new Schema({
         contentType: String 
     },
     songs: [
-        {
-        year:{ type: String,required:true},
-        composerName:{type:string,required:true},
-        pieceName:{String,required:true},
-        students:[{ type: String,required:true}]
-        }
+       {
+           pieceName:{ type: String, required:true}
+       }
     ]
 , 
 
