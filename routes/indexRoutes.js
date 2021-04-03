@@ -1,8 +1,11 @@
 const express = require('express');
 const teacherController=require('../controllers/teacherController');
 const loginController = require('../controllers/loginController');
-const studentController = require('../controllers/studentController');
+
+const albumController = require('../controllers/albumController');
+
 const concertController = require('../controllers/concertController');
+const studentController = require('../controllers/studentController');
 const router = express.Router();
 
 router.post('/addStudent',studentController.upload.single('img'),studentController.addStudent)
@@ -32,7 +35,7 @@ router.get('/calender',(req, res)=>{
 })
 
 router.get('/album',(req, res)=>{
-    res.render('album');
+    res.render('album',{success:"",failure:""});
 })
 
 router.get('/album/detail',(req, res)=>{
@@ -49,8 +52,12 @@ router.get('/student', studentController.showStudent)
 router.get('/addStudent',(req, res)=>{
     res.render('addStudent')
 })
+router.post('/album',albumController.upload.single('img'),albumController.createAlbum)
 
-router.get('/createConcert',concertController.loadConcertPage)
-
-
+router.get('/createConcert',(req, res) =>{
+    res.render('createConcert')
+})
+router.get('/routine',(req, res) =>{
+    res.render('routine')
+})
 module.exports = router;
