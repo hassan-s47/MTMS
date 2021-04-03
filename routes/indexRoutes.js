@@ -1,12 +1,11 @@
 const express = require('express');
 const teacherController=require('../controllers/teacherController');
 const loginController = require('../controllers/loginController');
-const studentController = require('../controllers/studentController');
-<<<<<<< HEAD
+
 const albumController = require('../controllers/albumController');
-=======
+
 const concertController = require('../controllers/concertController');
->>>>>>> e12870c96b15dabc14bcafbba474d5d1da0f9f40
+const studentController = require('../controllers/studentController');
 const router = express.Router();
 
 router.post('/addStudent',studentController.upload.single('img'),studentController.addStudent)

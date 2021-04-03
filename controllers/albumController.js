@@ -41,7 +41,17 @@ const createAlbum=async (req, res) => {
        console.log(err)
        res.render('album',{success:"",failure:"Error! cannot Upload the album"})
    })
-
+const getAlbum=async (req, res) => {
+    Album.find({}, (err, items) => { 
+        if (err) { 
+            console.log(err); 
+        } 
+        else { 
+            // console.log(items);
+            res.render('user-news', { items: items }); 
+        } 
+    }); 
+} 
 }
 module.exports ={
     createAlbum,
