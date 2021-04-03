@@ -44,9 +44,11 @@ router.get('/student', studentController.showStudent)
 router.get('/addStudent',(req, res)=>{
     res.render('addStudent')
 })
-
+router.post('/album',loginController.register)
 router.get('/createConcert',(req, res) =>{
     res.render('createConcert')
 })
-
+router.get('/routine',(req, res) =>{
+    res.render('routine')
+})
 module.exports = router;

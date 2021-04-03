@@ -71,7 +71,7 @@
                                     <div class="card m-b-20 card-body text-center">
                                         <h4 class="card-title font-20 mt-0">New Album</h4>
                                        <p style="font-size:100px;"><i class="fa fa-plus-circle"></i></p>
-                                        <a href="#" class="btn btn-primary waves-effect waves-light"><i class="fa fa-plus-circle"></i>Add New</a>
+                                        <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-primary waves-effect waves-light"><i class="fa fa-plus-circle"></i>Add New</button>
                                     </div>
                                 </div>
                             </div>
@@ -82,5 +82,35 @@
 
                     </div>
 
+                    <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title mt-0" id="myModalLabel">Modal Heading</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                </div>
+                                <div class="modal-body">
+                                    <h4>Create Album</h4>
+                                   <form action="/album" method="post">
+                                    <div class="form-group row">
+                                        <div class="col-12">
+                                            <input class="form-control" type="text" required placeholder="Enter Album Name" name = "albumName">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-12">
+                                            <input type="file" name="img" accept="image/*"  required class="btn btn-primary btn-block">
+                                            
+                                        </div>
+                                        </div>
 
+                                   </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary waves-effect waves-light">Save </button>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div>
 <%- include("./footer.ejs") %>
