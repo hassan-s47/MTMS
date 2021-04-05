@@ -1,9 +1,7 @@
 const express = require('express');
 const teacherController=require('../controllers/teacherController');
 const loginController = require('../controllers/loginController');
-
 const albumController = require('../controllers/albumController');
-
 const concertController = require('../controllers/concertController');
 const studentController = require('../controllers/studentController');
 const router = express.Router();
