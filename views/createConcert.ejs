@@ -19,20 +19,20 @@
                     <div class="page-content-wrapper ">
 
                         <div class="container-fluid">
-                           <form action="">
+                           <form action="" method="post">
                              <div class="row">
                                  
                         <div class="col-md-6">
                             <div class="form-group row">
                                 <label for="example-search-input" class="col-sm-2 col-form-label">Title</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" type="text" required name="name" placeholder="Enter Name" id="concert-title">
+                                    <input class="form-control" type="text" required name="title" placeholder="Enter Name" id="concert-title">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="example-search-input" class="col-sm-2 col-form-label">Location</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" required type="text" placeholder="Enter Location" name="email" id="location">
+                                    <input class="form-control" required type="text" placeholder="Enter Location" name="location" id="location">
                                 </div>
                             </div>
 
@@ -46,18 +46,18 @@
                             <div class="form-group row">
                                 <label for="example-date-input" name="dob" class="col-sm-2 col-form-label">Date</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" type="date"  id="date">
+                                    <input class="form-control" type="date" name="dates"  id="date">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="example-search-input" class="col-sm-2 col-form-label">Commentar</label>
                                 <div class="col-sm-10">
-                                    <textarea rows="5" style="width: 100%" name="address" id = "commentar"></textarea>
+                                    <textarea rows="5" style="width: 100%" name="commentar" id = "commentar"></textarea>
                                 </div>
                             </div>
                            
                             
-                            <button type="button" class="btn btn-primary waves-effect waves-light" id = "addConcert">Add</button>
+                            <button type="submit" class="btn btn-primary waves-effect waves-light" id = "addConcert">Add</button>
 
                             <button type="button" class="btn btn-info waves-effect waves-light">Update</button>
 
@@ -79,7 +79,7 @@
                                     <% students.forEach(element => { %>
                                      <tr>
                                          <td> <%= element.name %> </td>
-                                         <td><input type="checkbox" class="studentid" name="add" value = <%= element._id %>></td>
+                                         <td><input type="checkbox" class="studentid" name="studentid[]"  value= <%= element._id %>></td>
                                          
                                      </tr>
                                     <% }) %>

@@ -12,7 +12,24 @@ const loadConcertPage = async (req, res) => {
 }
 
 const addConcert = async (req, res) => {
-    console.log(req.body);
+    mystudent=req.body.studentid
+    
+   const concert=new Concert({
+
+        title :req.body.title,
+        location:req.body.location,
+        dates:req.body.dates,
+        comments :req.body.commentar,
+        students:mystudent
+                            
+    })
+   concert.save()
+   .then((response) =>{
+       res.redirect('/createConcert')
+   })
+   .catch((err) =>{
+       console.error(err)
+   })
 }
 
 module.exports = {

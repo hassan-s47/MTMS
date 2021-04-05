@@ -34,14 +34,16 @@ router.get('/calender',(req, res)=>{
     res.render('calender');
 })
 
-router.get('/album',(req, res)=>{
-    res.render('album',{success:"",failure:""});
-})
+router.get('/album',albumController.getAlbum);
 
-router.get('/album/detail',(req, res)=>{
+router.get('/album/detail/:id',(req, res)=>{
 
     res.render('albumDetails');
 })
+router.get('/addSong',albumController.addSongView)
+
+router.post('/addSong',albumController.addSong)
+
 
 router.get('/routine',(req, res) => {
     res.render('routine');
@@ -55,10 +57,11 @@ router.get('/addStudent',(req, res)=>{
 router.post('/album',albumController.upload.single('img'),albumController.createAlbum)
 
 router.get('/createConcert',concertController.loadConcertPage)
-
+router.post('/createConcert',concertController.addConcert)
 router.post('/createConcert/',concertController.addConcert)
 
 router.get('/routine',(req, res) =>{
     res.render('routine')
 })
+
 module.exports = router;
