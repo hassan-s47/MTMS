@@ -6,12 +6,22 @@ const concertController = require('../controllers/concertController');
 const studentController = require('../controllers/studentController');
 const router = express.Router();
 
-router.post('/addStudent',studentController.upload.single('img'),studentController.addStudent)
+const redirectLogin = (req, res, next) => {
+    if(!req.session.user)
+    {
+      res.redirect('/');
+    }
+    else
+    next();
+      
+  }
 
-router.get('/teacher',(req, res)=>{
+router.post('/addStudent',redirectLogin, studentController.upload.single('img'),studentController.addStudent)
+
+router.get('/teacher',redirectLogin,(req, res)=>{
     res.render('teacher')
 })
-router.get('/dashboard',(req, res)=>{
+router.get('/dashboard',redirectLogin,(req, res)=>{
     res.render('dashboard')
 })
 
@@ -28,40 +38,37 @@ router.get('/register',(req, res)=>{
 router.post('/register',loginController.register)
 
 
-router.get('/calender',(req, res)=>{
+router.get('/calender',redirectLogin,(req, res)=>{
     res.render('calender');
 })
 
-router.get('/album',albumController.getAlbum);
+router.get('/album',redirectLogin,albumController.getAlbum);
 
-router.get('/album/detail/:id',(req, res)=>{
+router.get('/album/detail/:id',redirectLogin,albumController.getAlbumDetails)
+router.get('/addSong/:id',redirectLogin,albumController.addSongView)
 
-    res.render('albumDetails');
-})
-router.get('/addSong',albumController.addSongView)
-
-router.post('/addSong',albumController.addSong)
+router.post('/addSong',albumController.upload.single('file'),redirectLogin,albumController.addSong)
 
 
-router.get('/routine',(req, res) => {
-    res.render('routine');
+router.get('/routine',redirectLogin,(req, res) => {
 })
 
-router.get('/student', studentController.showStudent)
+router.get('/student',redirectLogin, studentController.showStudent)
 
-router.get('/addStudent',(req, res)=>{
+router.get('/addStudent',redirectLogin,(req, res)=>{
     res.render('addStudent')
 })
-router.post('/album',albumController.upload.single('img'),albumController.createAlbum)
-router.get('/concert',concertController.viewConcert)
-router.get('/concert/edit/:id',concertController.editConcert)
-router.get('/concert/delete/:id',concertController.deleteConcert)
-router.post('/update/concert',concertController.updateConcert)
-router.get('/createConcert',concertController.loadConcertPage)
-router.post('/createConcert',concertController.addConcert)
-router.post('/createConcert/',concertController.addConcert)
+router.post('/album',redirectLogin,albumController.upload.single('img'),albumController.createAlbum)
+router.get('/concert',redirectLogin,concertController.viewConcert)
+router.get('/concert/edit/:id',redirectLogin,concertController.editConcert)
+router.get('/concert/delete/:id',redirectLogin,concertController.deleteConcert)
+router.post('/update/concert',redirectLogin,concertController.updateConcert)
+router.get('/createConcert',redirectLogin,concertController.loadConcertPage)
+router.post('/createConcert',redirectLogin,concertController.addConcert)
+router.post('/createConcert/',redirectLogin,concertController.addConcert)
 
-router.get('/routine',(req, res) =>{
+router.get('/album/song/delete/:id',redirectLogin,albumController.deleteSong)
+router.get('/routine',redirectLogin,(req, res) =>{
     res.render('routine')
 })
 
