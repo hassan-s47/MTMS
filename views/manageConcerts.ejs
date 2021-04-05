@@ -6,7 +6,7 @@
         </button>
     </li>
     <li class="hide-phone list-inline-item app-search">
-        <h3 class="page-title">Music Album Details</h3>
+        <h3 class="page-title">Concert</h3>
     </li>
 </ul>
 
@@ -19,8 +19,15 @@
 
                         <div class="container-fluid">
                            
-                              
-                            <div class="row" >
+                            <div class="row">
+                            
+                                <div class="col-md-10"></div>
+                                <div class="col-md-2">
+                                    <a href="/createConcert"> <button type="button" class="btn btn-dark btn-block"><i class="fa fa-plus"></i>Add Concert</button></a>
+                                 </div>
+                                </div>
+                                <br>  
+                            <!-- <div class="row" >
                                 <div class="col-md-4">
                                 
                                   </div>
@@ -28,7 +35,7 @@
                                 <div class="col-md-4">
                                     <input type="text" id="myInput" class="form-control" placeholder="Search ...">
                                 </div>
-                            </div>
+                            </div> -->
 
                            
                                 <div class="table-rep-plugin">
@@ -39,42 +46,26 @@
                                                 
                                                 <th data-priority="1">Ttile</th>
                                                 <th data-priority="2">Location</th>
-                                                <th data-priority="3">Da/Time</th>
+                                                <th data-priority="3">Date/Time</th>
                                                 <th>Action</th>
                                             </tr>
                                             </thead>
                                             <tbody>
+                                                <% items.forEach(function(concert) { %> 
                                             <tr>
                                                
-                                                <td>1997</td>
-                                                <td>Gourab</td>
-                                                <td>XYZ</td>
+                                                <td><%= concert.title %></td>
+                                                <td><%= concert.location %></td>
+                                                <td><%= concert.dates %></td>
                                                 <td>
-                                                    <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i></button>
-
+                                                  
+                                                 
+                                                    <a class="btn btn-primary" href="/concert/edit/<%= concert._id%>"><i class="fa fa-edit"></i></a>
+                                                    <a class="btn btn-primary" href="/concert/delete/<%= concert._id%>"><i class="fa fa-trash"></i></a>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                               
-                                                <td>1997</td>
-                                                <td>Gourab</td>
-                                                <td>XYZ</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i></button>
-
-                                                </td>
-                                            </tr>
-                                          
-                                            <tr>
-                                               
-                                                <td>1997</td>
-                                                <td>Gourab</td>
-                                                <td>XYZ</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i></button>
-
-                                                </td>
-                                            </tr>
+                                            <% }) %> 
+                                         
                                           
                                             
                                             </tbody>
