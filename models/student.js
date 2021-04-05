@@ -14,8 +14,8 @@ const StudentSchema = new Schema({
     instrumentModel:{ type: String, required:true },
     img: 
     { 
-        data: Buffer, 
-        contentType: String 
+        type: String,
+        required:true,
     } 
    
 },{timestamps : true  });

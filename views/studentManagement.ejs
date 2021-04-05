@@ -60,7 +60,7 @@
                                         <div class="card-body">
 
                                             <div class="media">
-                                                <img src="data:image/<%=image.img.contentType%>;base64,<%=image.img.data.toString('base64')%>" class="d-flex mr-3 rounded-circle img-thumbnail thumb-lg">
+                                                <img src="<%= image.img %> " class="d-flex mr-3 rounded-circle img-thumbnail thumb-lg">
                                                 <div class="media-body">
                                                     <h5 class="mt-0 font-18 mb-1"><%= image.name %></h5>
                                                     <p class="text-muted font-14"><%= image.email %></p>

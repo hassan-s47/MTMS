@@ -63,7 +63,7 @@
                                             <h4 class="card-title font-20 mt-0"><%=album.albumName %></h4>
                                             
                                         </div>
-                                        <img class="img-fluid" style="max-width:800px; height:270px"  src="data:album/<%=album.img.contentType %>;base64,<%=album.img.data.toString('base64')%>" >
+                                        <img class="img-fluid" style="max-width:800px; height:270px" src="<%= album.img%> " >
                                                
                                        
                                         <div class="card-body">

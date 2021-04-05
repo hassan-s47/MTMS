@@ -35,11 +35,8 @@ const addStudent=async(req, res)=>{
         instrumentModel: req.body.instrumentModel,
         semCount: req.body.semCount,
         teacher: req.session.user,
-       
-        img: { 
-            data: fs.readFileSync(path.join('./public/uploads/' + req.file.filename)), 
-            contentType: 'image/png'
-        } 
+        img: path.join('/uploads/' + req.file.filename)
+         
     } 
     Student.create(obj, (err, item) => { 
         if (err) { 

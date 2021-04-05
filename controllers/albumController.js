@@ -16,6 +16,7 @@ const storage = multer.diskStorage({
 
 
 const upload = multer({ storage: storage }); 
+
 function isEmpty(obj) {
     for(var key in obj) {
         if(obj.hasOwnProperty(key))
@@ -41,15 +42,17 @@ const addSongView= async (req,res)=> {
         } 
     });
 }
+
+
 const createAlbum=async (req, res) => {
     
    const album = new Album({
-    albumName: req.body.albumName,
-    img: { 
-        data: fs.readFileSync(path.join('./public/uploads/' + req.file.filename)), 
-        contentType: 'image/png'
-    } 
-   })
+    
+        albumName: req.body.albumName,
+        img:  path.join('/uploads/' + req.file.filename ) 
+        
+    })
+
    album.save()
    .then((response)=>{
        console.log(req.file.filename)
@@ -60,6 +63,7 @@ const createAlbum=async (req, res) => {
         } 
         else { 
             // console.log(items);
+           
             res.render('album', { items: items,success:"Album Created",failure:"" }); 
         } 
     }); 
@@ -79,13 +83,14 @@ const createAlbum=async (req, res) => {
 }
 
 
+
 const getAlbum=async (req, res) => {
     Album.find({}, (err, items) => { 
         if (err) { 
             console.log(err); 
         } 
         else { 
-            // console.log(items);
+            
             res.render('album', { items: items,success:"",failure:"" }); 
         } 
     }); 

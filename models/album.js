@@ -4,11 +4,7 @@ const Schema = mongoose.Schema;
 
 const AlbumSchema = new Schema({
     albumName :{ type: String, required:true},
-    img: 
-    { 
-        data: Buffer, 
-        contentType: String 
-    },
+    img:{type: String, required:true}, 
     songs: [
        {
            pieceName:{ type: String, required:true}
