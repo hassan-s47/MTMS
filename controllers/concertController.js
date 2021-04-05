@@ -11,6 +11,11 @@ const loadConcertPage = async (req, res) => {
 
 }
 
+const addConcert = async (req, res) => {
+    console.log(req.body);
+}
+
 module.exports = {
     loadConcertPage,
+    addConcert,
 }

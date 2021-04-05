@@ -9,7 +9,7 @@ const ConcertSchema = new Schema({
    comments : { type:String, required:true},
    students : [
        {
-            type: Schema.Types.ObjectId, ref: 'Student'
+            type: Schema.Types.ObjectId, ref: 'Student',
        }
    ]
    
