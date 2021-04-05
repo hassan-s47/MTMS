@@ -3,6 +3,7 @@ const path = require('path');
 const multer = require('multer'); 
 const Album = require('../models/album');
 const songs = require('../models/songs');
+const Student=require('../models/student');
 const storage = multer.diskStorage({ 
     destination: (req, file, cb) => { 
         cb(null, './public/uploads') 
@@ -22,9 +23,26 @@ function isEmpty(obj) {
     }
     return false;
 }
+const addSong=async (req, res) => {
 
+    console.log(req.body.student)
+
+
+}
+
+const addSongView= async (req,res)=> {
+    Student.find({}, (err, items) => { 
+        if (err) { 
+            console.log(err); 
+        } 
+        else { 
+            // console.log(items);
+            res.render('addSongs', { items: items}); 
+        } 
+    });
+}
 const createAlbum=async (req, res) => {
-    console.log("album",req.body.albumName)
+    
    const album = new Album({
     albumName: req.body.albumName,
     img: { 
@@ -35,12 +53,33 @@ const createAlbum=async (req, res) => {
    })
    album.save()
    .then((response)=>{
-      res.render('album',{success:"Album Created",failure:""})
+       console.log(req.file.filename)
+  
+    Album.find({}, (err, items) => { 
+        if (err) { 
+            console.log(err); 
+        } 
+        else { 
+            // console.log(items);
+            res.render('album', { items: items,success:"Album Created",failure:"" }); 
+        } 
+    }); 
    })
    .catch((err)=>{
-       console.log(err)
-       res.render('album',{success:"",failure:"Error! cannot Upload the album"})
+    Album.find({}, (err, items) => { 
+        if (err) { 
+            console.log(err); 
+        } 
+        else { 
+            // console.log(items);
+            res.render('album', { items: items,success:"Album Created",failure:"Error! cannot Upload the album" }); 
+        } 
+    }); 
+    
    })
+}
+
+
 const getAlbum=async (req, res) => {
     Album.find({}, (err, items) => { 
         if (err) { 
@@ -48,12 +87,15 @@ const getAlbum=async (req, res) => {
         } 
         else { 
             // console.log(items);
-            res.render('user-news', { items: items }); 
+            res.render('album', { items: items,success:"",failure:"" }); 
         } 
     }); 
 } 
-}
+
 module.exports ={
     createAlbum,
     upload,
+    getAlbum,
+    addSong,
+    addSongView
 }

@@ -55,24 +55,28 @@
                              
                                 </script>
                             <div class="row" style="margin-top:4px;">
+                                <% items.forEach(function(album) { %> 
                                 <div class="col-md-4 col-lg-4 col-xl-4">
 
                                     <div class="card m-b-20">
-                                        <div class="card-body">
-                                            <h4 class="card-title font-20 mt-0">Mozart</h4>
+                                        <div class="card-body"> 
+                                            <h4 class="card-title font-20 mt-0"><%=album.albumName %></h4>
                                             
                                         </div>
-                                        <img class="img-fluid" src="/assets/images/small/img-4.jpg" alt="Card image cap">
+                                        <img class="img-fluid" style="max-width:800px; height:270px"  src="data:album/<%=album.img.contentType %>;base64,<%=album.img.data.toString('base64')%>" >
+                                               
+                                       
                                         <div class="card-body">
                                          
-                                            <a href="/album/detail" class="card-link">View</a>
+                                            <a href="/album/detail/<%= album._id %>" class="card-link">View</a>
                                             
                                         </div>
                                     </div>
 
                                 </div> 
+                                <% }) %> 
 
-                                <div class="col-md-4 col-lg-4 col-xl-4">
+                                <!-- <div class="col-md-4 col-lg-4 col-xl-4">
 
                                     <div class="card m-b-20">
                                         <div class="card-body">
@@ -87,7 +91,7 @@
                                         </div>
                                     </div>
 
-                                </div>
+                                </div> -->
 
                                 <div class="col-lg-4 ">
                                     <div class="card m-b-20 card-body text-center">
@@ -121,7 +125,7 @@
                                     </div>
                                     <div class="form-group row">
                                         <div class="col-12">
-                                            <input type="file" name="img" accept="image/*" id="img"  required class="btn btn-primary btn-block">
+                                            <input type="file" name="img" id="img"  required class="btn btn-primary btn-block">
                                             
                                         </div>
                                         </div>
