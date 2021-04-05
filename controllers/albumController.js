@@ -24,14 +24,13 @@ function isEmpty(obj) {
 }
 
 const createAlbum=async (req, res) => {
-    console.log("album",req.body.albumName)
+   console.log("album",req.body.albumName)
    const album = new Album({
     albumName: req.body.albumName,
     img: { 
         data: fs.readFileSync(path.join('./public/uploads/' + req.file.filename)), 
         contentType: 'image/png'
     } 
-
    })
    album.save()
    .then((response)=>{
