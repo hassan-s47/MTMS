@@ -56,9 +56,10 @@ router.get('/addStudent',(req, res)=>{
 })
 router.post('/album',albumController.upload.single('img'),albumController.createAlbum)
 
-router.get('/createConcert',(req, res) =>{
-    res.render('createConcert')
-})
+router.get('/createConcert',concertController.loadConcertPage)
+
+router.post('/createConcert/',concertController.addConcert)
+
 router.get('/routine',(req, res) =>{
     res.render('routine')
 })
