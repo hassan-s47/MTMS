@@ -22,7 +22,7 @@
                             
                                 <div class="col-md-10"></div>
                                 <div class="col-md-2">
-                                    <a href="/student"> <button type="button" class="btn btn-dark btn-block"><i class="fa fa-plus"></i>Add New</button></a>
+                                    <a href="/addSong/<%= id  %> "> <button type="button" class="btn btn-dark btn-block"><i class="fa fa-plus"></i>Add New</button></a>
                                  </div>
                                 </div>
                                 <br>
@@ -50,37 +50,22 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr>
-                                               
-                                                <td>1997</td>
-                                                <td>Gourab</td>
-                                                <td>XYZ</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i></button>
-
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                               
-                                                <td>1997</td>
-                                                <td>Gourab</td>
-                                                <td>XYZ</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i></button>
-
-                                                </td>
-                                            </tr>
-                                          
-                                            <tr>
-                                               
-                                                <td>1997</td>
-                                                <td>Gourab</td>
-                                                <td>XYZ</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i></button>
-
-                                                </td>
-                                            </tr>
+                                            
+                                                <% album.forEach(element => { %>
+                                                 <tr>
+                                                    
+                                                    <td><%= element.year %> </td>
+                                                    <td><%= element.composerName %> </td>
+                                                    <td><%= element.pieceName  %> </td>
+                                                    <td>
+                                                        <a href="/album/song/delete/<%= element._id  %> " type="button" class="btn btn-primary"><i class="fa fa-trash"></i></a>
+    
+                                                    </td>
+                                                     
+                                                 </tr>
+                                                <% }) %>
+                                        
+                                            
                                           
                                             
                                             </tbody>

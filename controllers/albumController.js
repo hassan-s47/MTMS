@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path'); 
 const multer = require('multer'); 
 const Album = require('../models/album');
-const songs = require('../models/songs');
+const Songs = require('../models/songs');
 const Student=require('../models/student');
 const storage = multer.diskStorage({ 
     destination: (req, file, cb) => { 
@@ -24,9 +24,25 @@ function isEmpty(obj) {
     }
     return false;
 }
-const addSong=async (req, res) => {
 
-    console.log(req.body.student)
+const addSong=async (req, res) => {
+    const song = new Songs({ 
+        album: req.body.albumid,
+        year: req.body.year,
+        composerName : req.body.composername,
+        pieceName : req.body.songname,
+        student: req.body.student,
+        file:  path.join('/uploads/' + req.file.filename )
+    })
+    
+    song.save()
+    .then((result) => {
+        res.redirect('/album/detail/'+req.body.albumid)
+    })
+    .catch( (err) => {
+        console.log(err);
+    })
+
 
 
 }
@@ -38,7 +54,7 @@ const addSongView= async (req,res)=> {
         } 
         else { 
             // console.log(items);
-            res.render('addSongs', { items: items}); 
+            res.render('addSongs', {id:req.params.id, items: items}); 
         } 
     });
 }
@@ -49,7 +65,8 @@ const createAlbum=async (req, res) => {
    const album = new Album({
     
         albumName: req.body.albumName,
-        img:  path.join('/uploads/' + req.file.filename ) 
+        img:  path.join('/uploads/' + req.file.filename ) ,
+        teacher : req.session.user
         
     })
 
@@ -57,7 +74,7 @@ const createAlbum=async (req, res) => {
    .then((response)=>{
        console.log(req.file.filename)
   
-    Album.find({}, (err, items) => { 
+    Album.find({teacher: req.session.user}, (err, items) => { 
         if (err) { 
             console.log(err); 
         } 
@@ -69,7 +86,7 @@ const createAlbum=async (req, res) => {
     }); 
    })
    .catch((err)=>{
-    Album.find({}, (err, items) => { 
+    Album.find({teacher: req.session.user}, (err, items) => { 
         if (err) { 
             console.log(err); 
         } 
@@ -82,10 +99,21 @@ const createAlbum=async (req, res) => {
    })
 }
 
+const getAlbumDetails =async (req, res) => {
+    Songs.find({album:req.params.id})
+    .then((result) => {
+        console.log(result);
+        req.session.album = req.params.id;
+        res.render('albumDetails', {id:req.params.id, album: result} )
 
+    })
+    .catch((err) => {
+        console.log(err); 
+    })
+}
 
 const getAlbum=async (req, res) => {
-    Album.find({}, (err, items) => { 
+    Album.find({teacher: req.session.user}, (err, items) => { 
         if (err) { 
             console.log(err); 
         } 
@@ -96,10 +124,22 @@ const getAlbum=async (req, res) => {
     }); 
 } 
 
+
+const deleteSong=async (req, res) => {
+
+    Songs.findByIdAndDelete(req.params.id)
+    .then((result) => { 
+        res.redirect('/album/detail/'+req.session.album)
+    })
+
+}
+
 module.exports ={
     createAlbum,
     upload,
     getAlbum,
+    getAlbumDetails,
     addSong,
-    addSongView
+    addSongView,
+    deleteSong
 }
