@@ -4,6 +4,7 @@ const loginController = require('../controllers/loginController');
 const albumController = require('../controllers/albumController');
 const concertController = require('../controllers/concertController');
 const studentController = require('../controllers/studentController');
+const calenderController = require('../controllers/calenderController');
 const router = express.Router();
 
 const redirectLogin = (req, res, next) => {
@@ -38,9 +39,7 @@ router.get('/register',(req, res)=>{
 router.post('/register',loginController.register)
 
 
-router.get('/calender',redirectLogin,(req, res)=>{
-    res.render('calender');
-})
+router.get('/calender',redirectLogin, calenderController.calender)
 
 router.get('/album',redirectLogin,albumController.getAlbum);
 
@@ -68,8 +67,6 @@ router.post('/createConcert',redirectLogin,concertController.addConcert)
 router.post('/createConcert/',redirectLogin,concertController.addConcert)
 
 router.get('/album/song/delete/:id',redirectLogin,albumController.deleteSong)
-router.get('/routine',redirectLogin,(req, res) =>{
-    res.render('routine')
-})
+router.get('/routine',redirectLogin,(req, res) =>{res.render('routine')})
 
 module.exports = router;

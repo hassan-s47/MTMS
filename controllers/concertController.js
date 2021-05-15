@@ -15,10 +15,12 @@ const addConcert = async (req, res) => {
     mystudent=req.body.studentid
     
    const concert=new Concert({
-
+        teacher: req.session.user,
         title :req.body.title,
         location:req.body.location,
         dates:req.body.dates,
+        startTime :req.body.startTime,
+        endTime :req.body.endTime,
         comments :req.body.commentar,
         students:mystudent
                             
@@ -28,7 +30,7 @@ const addConcert = async (req, res) => {
       mystudent.forEach(student => {
           Student.findById(student)
           .then((results)=>{
-            sendMail(results.email,req.body.title,req.body.location,req.body.dates)
+          //  sendMail(results.email,req.body.title,req.body.location,req.body.dates)
           })
 
 
@@ -149,7 +151,11 @@ async function sendMail(email,title,location,date,comments) {
               console.log(resutlt);
               return true;
             })
+            .catch((err) =>{
+                console.log(err)
+            })
             return result;
+            
   
     
  
