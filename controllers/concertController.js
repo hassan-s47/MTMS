@@ -137,7 +137,6 @@ async function sendMail(email,title,location,date,comments) {
           pass: '4321Abdullah', // generated ethereal password
         },
       });
-
              // send mail with defined transport object
              let result = await transporter.sendMail({
               from: '"Abdullah Aslam 👻" <abdullahaslammatrix@gmail.com>', // sender address
@@ -149,10 +148,7 @@ async function sendMail(email,title,location,date,comments) {
               console.log(resutlt);
               return true;
             })
-            return result;
-  
-    
- 
+            return result; 
 }
 
 const viewConcert=async (req, res) => {
@@ -215,5 +211,4 @@ module.exports = {
     editConcert,
     updateConcert,
     deleteConcert
-
 }

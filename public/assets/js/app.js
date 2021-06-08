@@ -148,15 +148,15 @@
     }(window.jQuery);
 
     
-//Disable cut copy paste
-$('body').bind('cut copy paste', function (e) {
-    e.preventDefault();
-});
+// //Disable cut copy paste
+// $('body').bind('cut copy paste', function (e) {
+//     e.preventDefault();
+// });
 
 //Disable mouse right click
-$("body").on("contextmenu",function(e){
-    return false;
-});
+// $("body").on("contextmenu",function(e){
+//     return false;
+// });
 // document.onkeydown = function(e) {
 //     if (e.ctrlKey && 
 //         (e.keyCode === 67 || 

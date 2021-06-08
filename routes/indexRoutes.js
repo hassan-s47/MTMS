@@ -18,6 +18,10 @@ const redirectLogin = (req, res, next) => {
 
 router.post('/addStudent',redirectLogin, studentController.upload.single('img'),studentController.addStudent)
 
+
+
+
+
 router.get('/teacher',redirectLogin,(req, res)=>{
     res.render('teacher')
 })
@@ -49,19 +53,22 @@ router.get('/addSong/:id',redirectLogin,albumController.addSongView)
 
 router.post('/addSong',albumController.upload.single('file'),redirectLogin,albumController.addSong)
 
+router.post('/addClass',redirectLogin,teacherController.addClass)
 
 router.get('/routine',redirectLogin,(req, res) => {
+    res.render('routine')
 })
 
 router.get('/student',redirectLogin, studentController.showStudent)
-
-router.get('/addStudent',redirectLogin,(req, res)=>{
-    res.render('addStudent')
+router.get('/getAvailabilityData',redirectLogin,(req, res)=>{
+    res.render('getAvailabilityData')
 })
+router.get('/addStudent',redirectLogin,studentController.loadAddStudent)
 router.post('/album',redirectLogin,albumController.upload.single('img'),albumController.createAlbum)
 router.get('/concert',redirectLogin,concertController.viewConcert)
 router.get('/concert/edit/:id',redirectLogin,concertController.editConcert)
 router.get('/concert/delete/:id',redirectLogin,concertController.deleteConcert)
+router.get('/album/delete/:id',redirectLogin,albumController.removeAlbum)
 router.post('/update/concert',redirectLogin,concertController.updateConcert)
 router.get('/createConcert',redirectLogin,concertController.loadConcertPage)
 router.post('/createConcert',redirectLogin,concertController.addConcert)
@@ -71,5 +78,10 @@ router.get('/album/song/delete/:id',redirectLogin,albumController.deleteSong)
 router.get('/routine',redirectLogin,(req, res) =>{
     res.render('routine')
 })
+router.post('/filter',redirectLogin,studentController.filterStudents)
+router.get('/managetimetable',redirectLogin,(req, res) =>{
+    res.render('manageTimetable')
+})
+router.get('/viewAvailabilityData',redirectLogin,studentController.viewAvailability)
 
 module.exports = router;

@@ -36,6 +36,18 @@
                                   
                                  </div>
                                  <div class="col-md-9">
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Select Class</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" name="className" required>
+                                              
+                                                <option value="Default" selected>Default</option>
+                                                <% classes.forEach(element => { %>
+                                                    <option value="<%= element.className %>"><%= element.className %></option>
+                                                <% }) %> 
+                                            </select>
+                                        </div>
+                                    </div>
                             <div class="form-group row">
                                 <label for="example-search-input" class="col-sm-2 col-form-label">Name</label>
                                 <div class="col-sm-10">
@@ -81,7 +93,7 @@
                             <div class="form-group row">
                                 <label for="example-date-input" class="col-sm-2 col-form-label">Semester Counter</label> 
                                 <div class="col-sm-10">
-                                    <input class="form-control" type="number" name="semCount" placeholder="Enter Semester Number">
+                                    <input class="form-control" type="number" name="semCount" placeholder="Enter Semester Number" required>
                                 </div>
                             </div>
                             <div class="form-group row">

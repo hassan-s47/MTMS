@@ -4,6 +4,7 @@ const multer = require('multer');
 const Album = require('../models/album');
 const Songs = require('../models/songs');
 const Student=require('../models/student');
+
 const storage = multer.diskStorage({ 
     destination: (req, file, cb) => { 
         cb(null, './public/uploads') 
@@ -12,9 +13,6 @@ const storage = multer.diskStorage({
         cb(null, file.fieldname + '-' + Date.now()) 
     } 
 }); 
-
-
-
 const upload = multer({ storage: storage }); 
 
 function isEmpty(obj) {
@@ -133,6 +131,12 @@ const deleteSong=async (req, res) => {
     })
 
 }
+const removeAlbum=async (req, res) => {
+    Album.findByIdAndDelete(req.params.id)
+    .then((result) => { 
+        res.redirect('/album')
+    })
+}
 
 module.exports ={
     createAlbum,
@@ -141,5 +145,6 @@ module.exports ={
     getAlbumDetails,
     addSong,
     addSongView,
-    deleteSong
+    deleteSong,
+    removeAlbum,
 }

@@ -50,7 +50,7 @@ File: Calendar init js
                 },
                 editable: true,
                 eventLimit: true, // allow "more" link when too many events
-                droppable: true, // this allows things to be dropped onto the calendar !!!
+                droppable: false, // this allows things to be dropped onto the calendar !!!
                 drop: function(date, allDay) { // this function is called when something is dropped
 
                     // retrieve the dropped element's stored Event Object
@@ -61,6 +61,7 @@ File: Calendar init js
 
                     // assign it the date that was reported
                     copiedEventObject.start = date;
+                    alert(date)
                     copiedEventObject.allDay = allDay;
 
                     // render the event on the calendar
@@ -117,9 +118,16 @@ File: Calendar init js
                         start: new Date(y, m, 28),
                         end: new Date(y, m, 29),
                         url: 'http://google.com/'
+                    },
+                    { 
+                        title: 'Abdullah eVENT',
+                        start: new Date(y, m, 22),
+                        end: new Date(y, m, 29),
+                        url: 'http://google.com/'
                     }]
-            });
-            
+            }
+            );
+            console.log(CalendarPage.prototype.init)
              /*Add new event*/
             // Form to add new event
 

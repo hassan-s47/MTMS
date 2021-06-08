@@ -60,7 +60,8 @@
 
                                     <div class="card m-b-20">
                                         <div class="card-body"> 
-                                            <h4 class="card-title font-20 mt-0"><%=album.albumName %></h4>
+                                            <h4 class="card-title font-20 mt-0"><%=album.albumName %><span class="pull-right">   <a href="/album/delete/<%= album._id  %> " type="button" class="btn btn-primary" style="background-color:transparent; color:red; border:0; font-size:25px;"><i class="fa fa-trash"></i></a>
+                                            </span></h4>
                                             
                                         </div>
                                         <img class="img-fluid" style="max-width:800px; height:270px" src="<%= album.img%> " >

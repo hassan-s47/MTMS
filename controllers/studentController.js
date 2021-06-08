@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path'); 
 const multer = require('multer'); 
 const Student = require('../models/student'); 
+const musicClass = require('../models/class')
 const storage = multer.diskStorage({ 
     destination: (req, file, cb) => { 
         cb(null, './public/uploads') 
@@ -12,7 +13,6 @@ const storage = multer.diskStorage({
 }); 
 
 
-
 const upload = multer({ storage: storage }); 
 function isEmpty(obj) {
     for(var key in obj) {
@@ -21,11 +21,16 @@ function isEmpty(obj) {
     }
     return false;
 }
+const viewAvailability=async (req, res) => {
+    res.render('viewAvailability')
+
+}
 const addStudent=async(req, res)=>{
     console.log(req.file)
 
     console.log(req.session.user)
     var obj = {
+        musicClass:req.body.className,
         name: req.body.name,
         email: req.body.email,
         gender: req.body.gender,
@@ -50,18 +55,48 @@ const addStudent=async(req, res)=>{
 
 }
 const showStudent= async (req,res)=>{
-    Student.find({teacher:req.session.user}, (err, items) => { 
-        if (err) { 
-            console.log(err); 
-        } 
-        else { 
-            // console.log(items);
-            res.render('studentManagement', { items: items }); 
-        } 
-    }); 
+    musicClass.find({teacher:req.session.user})
+    .then((response) => {
+        Student.find({teacher:req.session.user}, (err, items) => { 
+            if (err) { 
+                console.log(err); 
+            } 
+            else { 
+
+                res.render('studentManagement', { items: items,classes:response}); 
+            } 
+        }); 
+    })
+   
 } 
+const filterStudents=async (req, res) => {
+    musicClass.find({teacher:req.session.user})
+    .then((response) => {
+        console.log(req.body.className)
+        Student.find({teacher:req.session.user,musicClass:req.body.className}, (err, items) => { 
+            if (err) { 
+                console.log(err); 
+            } 
+            else { 
+
+                res.render('studentManagement', { items: items,classes:response}); 
+            } 
+        }); 
+    })
+
+}
+const loadAddStudent=async(req, res)=>{
+    musicClass.find({teacher:req.session.user})
+    .then((response)=>{
+        res.render('addStudent',{classes:response});
+    })
+}
+
 module.exports ={
     addStudent,
     upload,
     showStudent,
+    loadAddStudent,
+    filterStudents,
+    viewAvailability,
 }
