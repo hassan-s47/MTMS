@@ -15,7 +15,7 @@ const addConcert = async (req, res) => {
     mystudent=req.body.studentid
     
    const concert=new Concert({
-
+        teacher: req.session.user,
         title :req.body.title,
         location:req.body.location,
         dates:req.body.dates,
@@ -30,7 +30,7 @@ const addConcert = async (req, res) => {
       mystudent.forEach(student => {
           Student.findById(student)
           .then((results)=>{
-            sendMail(results.email,req.body.title,req.body.location,req.body.dates)
+          //  sendMail(results.email,req.body.title,req.body.location,req.body.dates)
           })
 
 
@@ -143,7 +143,7 @@ async function sendMail(email,title,location,date,comments) {
              let result = await transporter.sendMail({
               from: '"Abdullah Aslam 👻" <abdullahaslammatrix@gmail.com>', // sender address
               to: email, // list of receivers
-              subject: subject, //✔", // Subject line
+              subject: "MTMS Concert Creator", //✔", // Subject line
               text: "Hello world?", // plain text body
               html: output, // html body
             }).then( (resutlt) => {

@@ -43,9 +43,7 @@ router.get('/register',(req, res)=>{
 router.post('/register',loginController.register)
 
 
-router.get('/calender',redirectLogin,(req, res)=>{
-    res.render('calender');
-})
+router.get('/calender',redirectLogin, calenderController.calender)
 
 router.get('/album',redirectLogin,albumController.getAlbum);
 

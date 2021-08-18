@@ -12,7 +12,6 @@ File: Calendar init js
     "use strict";
 
     var CalendarPage = function() {};
-
     CalendarPage.prototype.init = function() {
 
         //checking if plugin is available
