@@ -6,6 +6,8 @@
 File: Calendar init js
  */
 
+// const { data } = require("jquery");
+
 !function($) {
     "use strict";
 
@@ -36,7 +38,34 @@ File: Calendar init js
             });
             
             /* initialize the calendar */
+            var concerts;
+                $.ajax({
+                  url: '/loadConcert',
+                  data: {},
+                  method: 'GET',
+                  async:false,
+                  success: function(response){
+                    concerts=response.data
+                  }
+                  });
 
+            
+                 console.log(concerts)
+                var concertEvents = []
+                concerts.forEach((concert) => {
+                    date = concert.dates.split('-')
+                    var startTim = concert.startTime.split(':')
+                    var endTime = concert.endTime.split(':')
+                    console.log(date)
+                    concertEvents.push({
+                        title: concert.title,
+                        start: new Date(date[0],date[1]-1,date[2],startTim[0],startTim[1]),
+                        end: new Date(date[0],date[1]-1,date[2],endTime[0],endTime[1])     
+                    })
+                })
+            
+            
+              
             var date = new Date();
             var d = date.getDate();
             var m = date.getMonth();
@@ -75,56 +104,57 @@ File: Calendar init js
                     }
 
                 },
-                events: [{
-                    title: 'All Day Event',
-                    start: new Date(y, m, 1)
-                    },
-                    {
-                        title: 'Long Event',
-                        start: new Date(y, m, d-5),
-                        end: new Date(y, m, d-2)
-                    },
-                    {
-                        id: 999,
-                        title: 'Repeating Event',
-                        start: new Date(y, m, d-3, 16, 0),
-                        allDay: false
-                    },
-                    {
-                        id: 999,
-                        title: 'Repeating Event',
-                        start: new Date(y, m, d+4, 16, 0),
-                        allDay: false
-                    },
-                    {
-                        title: 'Meeting',
-                        start: new Date(y, m, d, 10, 30),
-                        allDay: false
-                    },
-                    {
-                        title: 'Lunch',
-                        start: new Date(y, m, d, 12, 0),
-                        end: new Date(y, m, d, 14, 0),
-                        allDay: false
-                    },
-                    {
-                        title: 'Birthday Party',
-                        start: new Date(y, m, d+1, 19, 0),
-                        end: new Date(y, m, d+1, 22, 30),
-                        allDay: false
-                    },
-                    {
-                        title: 'Click for Google',
-                        start: new Date(y, m, 28),
-                        end: new Date(y, m, 29),
-                        url: 'http://google.com/'
-                    },
-                    { 
-                        title: 'Abdullah eVENT',
-                        start: new Date(y, m, 22),
-                        end: new Date(y, m, 29),
-                        url: 'http://google.com/'
-                    }]
+                events: concertEvents
+                //  [{
+                //     title: 'All Day Event',
+                //     start: new Date(y, m, 1)
+                //     },
+                //     {
+                //         title: 'Long Event',
+                //         start: new Date(y, m, d-5),
+                //         end: new Date(y, m, d-2)
+                //     },
+                //     {
+                //         id: 999,
+                //         title: 'Repeating Event',
+                //         start: new Date(y, m, d-3, 16, 0),
+                //         allDay: false
+                //     },
+                //     {
+                //         id: 999,
+                //         title: 'Repeating Event',
+                //         start: new Date(y, m, d+4, 16, 0),
+                //         allDay: false
+                //     },
+                //     {
+                //         title: 'Meeting',
+                //         start: new Date(y, m, d, 10, 30),
+                //         allDay: false
+                //     },
+                //     {
+                //         title: 'Lunch',
+                //         start: new Date(y, m, d, 12, 0),
+                //         end: new Date(y, m, d, 14, 0),
+                //         allDay: false
+                //     },
+                //     {
+                //         title: 'Birthday Party',
+                //         start: new Date(y, m, d+1, 19, 0),
+                //         end: new Date(y, m, d+1, 22, 30),
+                //         allDay: false
+                //     },
+                //     {
+                //         title: 'Click for Google',
+                //         start: new Date(y, m, 28),
+                //         end: new Date(y, m, 29),
+                //         url: 'http://google.com/'
+                //     },
+                //     { 
+                //         title: 'Abdullah eVENT',
+                //         start: new Date(y, m, 22),
+                //         end: new Date(y, m, 29),
+                //         url: 'http://google.com/'
+                //     }]
             }
             );
             console.log(CalendarPage.prototype.init)

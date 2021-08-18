@@ -4,14 +4,15 @@ const loginController = require('../controllers/loginController');
 const albumController = require('../controllers/albumController');
 const concertController = require('../controllers/concertController');
 const studentController = require('../controllers/studentController');
+const slotController = require('../controllers/slotController');
 const router = express.Router();
 
 const redirectLogin = (req, res, next) => {
-    if(!req.session.user)
-    {
-      res.redirect('/');
-    }
-    else
+    // if(!req.session.user)
+    // {
+    //   res.redirect('/');
+    // }
+    // else
     next();
       
   }
@@ -83,5 +84,9 @@ router.get('/managetimetable',redirectLogin,(req, res) =>{
     res.render('manageTimetable')
 })
 router.get('/viewAvailabilityData',redirectLogin,studentController.viewAvailability)
+router.get('/loadConcert',redirectLogin,concertController.getAllConcert)
+router.get('/slotForm/:id',slotController.getSlotForm)
+router.post('/slotFormPost',slotController.slotPost)
+router.post('/requestAvailability',redirectLogin,slotController.requestAvailablity)
 
 module.exports = router;

@@ -6,6 +6,8 @@ const ConcertSchema = new Schema({
    title: { type: String, required:true},
    location:{ type: String, required:true},
    dates:{ type:String, required:true},
+   startTime:{type:String, required:true},
+   endTime:{type:String, required:true},
    comments : { type:String, required:true},
    students : [
        {

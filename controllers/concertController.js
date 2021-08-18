@@ -19,6 +19,8 @@ const addConcert = async (req, res) => {
         title :req.body.title,
         location:req.body.location,
         dates:req.body.dates,
+        startTime:req.body.startTime,
+        endTime:req.body.endTime,
         comments :req.body.commentar,
         students:mystudent
                             
@@ -199,9 +201,19 @@ const updateConcert =async (req, res) =>{
 const deleteConcert=async (req, res) => {
     Concert.findByIdAndRemove(req.params.id)
     .then((result) => {
-        // console.log(result);          
+       
         res.redirect('/concert');})
     .catch((err) => {console.log(err);  res.redirect('/concert');})
+}
+const getAllConcert= async (req,res)=>{
+    Concert.find({}, (err, items)=>{
+        if (err) { 
+            console.log(err); 
+        } 
+        else { 
+            res.json({msg: "Success", data: items});
+        } 
+    })
 }
 
 module.exports = {
@@ -210,5 +222,6 @@ module.exports = {
     viewConcert,
     editConcert,
     updateConcert,
-    deleteConcert
+    deleteConcert,
+    getAllConcert
 }
