@@ -12,7 +12,7 @@ const requestAvailablity=(req,res)=>{
             studentList.forEach(student => {
                 sendMail(req.body.message,student._id ,student.email)
                });
-               res.render('Dashboard')
+               res.render('dashboard')
         } 
     })
   
@@ -21,18 +21,16 @@ const requestAvailablity=(req,res)=>{
 }
 
 const getSlotForm = async (req,res)=>{
-    Slot.findById(req.params.id)
-    .then((err,resut) => {
+  result = await  Slot.findOne({student:req.params.id});
+  console.log(result);
         if(result == null)
         {
-            res.render('slotForm',{id});
+            res.render('slotForm',{id:req.params.id})
         }
         else
         {
-            res.render('slotForm',{id});
-        }
-    })
-    
+            res.render('dashboard');
+        }   
 }
 async function sendMail(message,studentID,receiver) {
     const output=`<head>
@@ -128,6 +126,27 @@ async function sendMail(message,studentID,receiver) {
 }
 
 const slotPost = async(req,res) => {
+
+    slots = await Slot.find();
+    console.log(slots);
+    
+
+    // slot = new Slot(
+    //     {
+    //         teacher: req.session.user,
+    //         student: req.body.studentID,
+    //         startTime: req.body.startTime,
+    //         endTime: req.body.endTime,
+    //         day: req.body.day
+    //     }
+    // );
+
+    // slot.save().then((result) => {
+    //     res.redirect('/dashboard');
+    // })
+    // .catch((error) => {
+    //     console.log(error);
+    // })
     
 }
 
