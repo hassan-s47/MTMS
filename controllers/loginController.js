@@ -1,6 +1,7 @@
 const Login = require('../models/user');
 const env = require('../config/env');
 const bcrypt = require('bcrypt');
+const nodemailer = require('nodemailer');
 
 const register = async (req, res) => {
 
@@ -73,8 +74,84 @@ const login = async (req, res) => {
 
 }
 
+
+const sendPasswordChangeRequest =  (req,res)=>{
+
+     Login.findOne({email:req.body.email})
+     .then(async function(userExist){
+
+   
+    const userEmail=req.body.email;
+    console.log(userExist._id)
+    if(userExist){
+       
+        link=`localhost:3000/create-new-password/${userExist._id}`;
+        let transporter = nodemailer.createTransport({
+            host: "smtp.gmail.com",
+            port: 587,
+            secure: false, // true for 465, false for other ports
+            auth: {
+              user: 'abdullahaslammatrix@gmail.com', // email address
+              pass: '4321Abdullah', // generated ethereal password
+            },
+          });
+                 // send mail with defined transport object
+                 let result = await transporter.sendMail({
+                  from: '"Abdullah Aslam 👻" <abdullahaslammatrix@gmail.com>', // sender address
+                  to: userEmail, // list of receivers
+                  subject: "MTMS Change Password", //✔", // Subject line
+                  text: link, // plain text body
+                  html:`<a href='${link}'> Change Password </a>` //  html: null, // ht ml body
+                }).then( (resutlt) => {
+                  console.log(resutlt);
+                res.redirect('/')
+
+
+
+                })
+                return result; 
+
+            }else{
+
+                console.log("User Not Exist")
+            }
+        })
+}
+
+const createNewPassword= async (req,res)=>{
+    ifValidUser=await Login.findOne({_id:req.params.id})
+    if(ifValidUser)
+    {
+        res.render('createNewPassword',{userID:req.params.id})
+    }
+    else{
+        console.log("UnAuthorized Access")
+    }
+}
+
+const resetPassword=(req,res)=>{
+
+    if(req.body.newPassword===req.body.newPassword2)
+    {
+        isUpdated=Login.findByIdAndUpdate({_id:req.body.userID},{password:req.body.newPassword})
+        if(isUpdated)
+        {
+            res.redirect('/')
+        }
+        else{
+            console.log("Something went Wrong")
+        }
+    }
+    else{
+        console.log("Password Doesn't Match")
+    }
+
+}
 module.exports = 
 {
     register,
-    login
+    login,
+    sendPasswordChangeRequest,
+    createNewPassword,
+    resetPassword
 }

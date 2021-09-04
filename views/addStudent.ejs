@@ -43,7 +43,7 @@
                                               
                                                 <option value="Default" selected>Default</option>
                                                 <% classes.forEach(element => { %>
-                                                    <option value="<%= element.className %>"><%= element.className %></option>
+                                                    <option value="<%=element._id%>"><%= element.className %></option>
                                                 <% }) %> 
                                             </select>
                                         </div>

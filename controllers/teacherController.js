@@ -1,7 +1,7 @@
 const musicClass= require('../models/class')
 
 const addClass=async (req, res) => {
-    
+    console.log(req.session.user)
     var classObj= new musicClass({
         teacher : req.session.user,
         className : req.body.className

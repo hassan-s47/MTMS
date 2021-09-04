@@ -30,7 +30,7 @@ const addStudent=async(req, res)=>{
 
     console.log(req.session.user)
     var obj = {
-        musicClass:req.body.className,
+        class:req.body.className,
         name: req.body.name,
         email: req.body.email,
         gender: req.body.gender,
@@ -73,7 +73,7 @@ const filterStudents=async (req, res) => {
     musicClass.find({teacher:req.session.user})
     .then((response) => {
         console.log(req.body.className)
-        Student.find({teacher:req.session.user,musicClass:req.body.className}, (err, items) => { 
+        Student.find({class:req.body.className}, (err, items) => { 
             if (err) { 
                 console.log(err); 
             } 

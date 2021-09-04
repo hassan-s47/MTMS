@@ -1,0 +1,154 @@
+<%- include("./header.ejs") %>
+<ul class="list-inline menu-left mb-0">
+    <li class="list-inline-item">
+        <button type="button" class="button-menu-mobile open-left waves-effect">
+            <i class="ion-navicon"></i>
+        </button>
+    </li>
+    <li class="hide-phone list-inline-item app-search">
+        <h3 class="page-title">Block Time Slots</h3>
+    </li>
+</ul>
+
+<div class="clearfix"></div>
+
+</nav>
+
+</div>
+<!-- Top Bar End -->
+
+<div class="page-content-wrapper ">
+
+<div class="container-fluid">
+    
+    <div class="row" >
+  
+        <div class="col-md-8 mx-auto">
+            <h2>Block Time Slot <a href="#" style="color:grey; text-decoration: none;"><span >( Step - 1 )</a></span></h2>
+            <form method="post" action="/addBlockedSlot">
+                <div class="form-group row">
+                    <label for="example-search-input" class="col-sm-2 col-form-label">Select Class</label>
+                    <div class="col-sm-10">
+                    <select class="form-control" name="class" required>
+                        <option value="All" selected>All</option>
+                        <% 
+                         classes.forEach(element => { %>
+                         
+                            <option value="<%= element._id %>"><%= element.className %></option>
+                            <% }) %> 
+                        
+                    </select>  
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Select Day</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" name="day" required>
+                            <option disabled selected>Select</option>
+                            <option value="Monday">Monday</option>
+                            <option value="Tuesday">Tuesday</option>
+                            <option value="Wednesday">Wednesday</option>
+                            <option value="Thursday">Thursday</option>
+                            <option value="Friday">Friday</option>
+                            <option value="Saturday">Saturday</option>
+                            <option value="Sunday">Sunday</option>
+                            
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Time From</label>
+                    <div class="col-sm-10">
+                       <input type="time" class="form-control" name="startTime" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Time To</label>
+                    <div class="col-sm-10">
+                       <input type="time" class="form-control" name="endTime" required>
+                    </div>
+                </div>
+                <div >
+                <div style=" display:inline;"> <input type="submit" value="ADD" class="btn btn-primary btn-lg" name="submit"></div>
+                
+                <div class="float-right" style=" display:inline;">
+                    
+                    <a href="/getAvailabilityData"><button type="button" class="btn btn-dark btn-lg">Next</button></a>
+                </div>
+                </div>
+                </form>
+
+            </div>    
+    
+    </div>
+
+</div>
+
+
+
+        <div class="row mt-5">
+            <div class="col-12">
+               
+                
+
+                       
+                       
+                        <div class="table-rep-plugin">
+                            <div class="table-responsive b-0" data-pattern="priority-columns">
+                                <table id="tech-companies-1" class="table  table-striped">
+                                    <thead>
+                                        <tr>
+                                            
+                                        
+                                            <th data-priority="1">Class</th>
+                                            <th data-priority="1">Day</th>
+                                            <th data-priority="3">Start Time</th>
+                                            <th data-priority="1">End Time</th>
+                                            <th> Action</th>
+    
+                                            
+                                        </tr>
+                                        </thead>
+                                    <tbody>
+                                        <% 
+                                        slot.forEach(blockSlot => { %>
+                                            <tr>
+                                                
+                                                <td><%= blockSlot.class %></td>
+                                                <td><%= blockSlot.day %></td>
+                                                <td><%= blockSlot.startTime %></td>
+                                                <td><%= blockSlot.endTime %></td>
+                                                <td><a href="/slot/delete/<%=blockSlot._id%>"><span class="fa fa-trash"></span></a></td>
+                                                
+                                                
+                                            </tr>
+                                           
+                                           <% }) %>
+                                
+                                
+                                
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+               
+            </div> <!-- end col -->
+        </div> <!-- end row -->
+
+   
+</div> <!-- Page content Wrapper -->
+
+
+</div> <!-- content -->
+
+ <%- include("./footer.ejs") %>
+ <script src="assets/plugins/RWD-Table-Patterns/dist/js/rwd-table.min.js" type="text/javascript"></script>
+ <script>
+    $(function() {
+        $('.table-responsive').responsiveTable({
+            addDisplayAllBtn: 'btn btn-secondary'
+        });
+    });
+</script>

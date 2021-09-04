@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const StudentSchema = new Schema({
-    musicClass:{type:String, required:true},
+    class:{type: Schema.Types.ObjectId,ref:'class', required:true},
     name :{ type: String, required:true},
     teacher: {type: Schema.Types.ObjectId,ref:'user', required:true},
     email: { type: String, required:true,unique:true },

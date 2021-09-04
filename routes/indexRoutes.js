@@ -60,9 +60,7 @@ router.get('/routine',redirectLogin,(req, res) => {
 })
 
 router.get('/student',redirectLogin, studentController.showStudent)
-router.get('/getAvailabilityData',redirectLogin,(req, res)=>{
-    res.render('getAvailabilityData')
-})
+router.get('/getAvailabilityData',redirectLogin,slotController.getAvaiablityPage)
 router.get('/addStudent',redirectLogin,studentController.loadAddStudent)
 router.post('/album',redirectLogin,albumController.upload.single('img'),albumController.createAlbum)
 router.get('/concert',redirectLogin,concertController.viewConcert)
@@ -84,8 +82,19 @@ router.get('/managetimetable',redirectLogin,(req, res) =>{
 })
 router.get('/viewAvailabilityData',redirectLogin,studentController.viewAvailability)
 router.get('/loadConcert',redirectLogin,concertController.getAllConcert)
-router.get('/slotForm/:id',slotController.getSlotForm)
+router.get('/slotForm/:id&:classID',slotController.getSlotForm)
 router.post('/slotFormPost',slotController.slotPost)
 router.post('/requestAvailability',redirectLogin,slotController.requestAvailablity)
+router.get('/blockSlot',redirectLogin,slotController.blockSlot)
+router.get('/slot/delete/:id',redirectLogin,slotController.deleteSlot)
+router.post('/addBlockedSlot',redirectLogin,slotController.addSlot)
+router.post('/verifySlot',slotController.verifySlot)
+router.post('/saveStudentSlot',slotController.saveStudentSlot)
+router.get('/recoverPassword',(req,res)=>{
+    res.render('recoverPassword')
+})
+router.get('/create-new-password/:id',loginController.createNewPassword)
+router.post('resetPassword',loginController.resetPassword)
 
+router.post('/sendPasswordChanageRequest',loginController.sendPasswordChangeRequest)
 module.exports = router;

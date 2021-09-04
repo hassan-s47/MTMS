@@ -1,5 +1,9 @@
-
-var checkIfSlotIsValid = function(slots,slot) {
+ const checkIfSlotIsValid = function(slots,slot) {
+     if(slots.length==0)
+     {
+         console.log(slots.length)
+         return true
+     }
     var timeTable = new Map();
     for( let day = 0; day < 7; day++ ) {
     for(let i = 0; i < 24; i++) {
@@ -61,26 +65,29 @@ const getDay = function(day)
 
 }
 
-slots = 
-[
-    {
-        startTime : "00:00",
-        endTime: "00:30",
-        day: "Monday"
-    },
-    {
-        startTime : "00:30",
-        endTime: "01:00",
-        day: "Tuesday"
-    }
-]
-slot = 
-{
-    startTime : "00:30",
-    endTime: "01:10",
-    day: "Monday"
+// slots = 
+// [
+//     {
+//         startTime : "00:00",
+//         endTime: "00:30",
+//         day: "Monday"
+//     },
+//     {
+//         startTime : "00:30",
+//         endTime: "01:00",
+//         day: "Tuesday"
+//     }
+// ]
+// slot = 
+// {
+//     startTime : "00:30",
+//     endTime: "01:10",
+//     day: "Monday"
+// }
+
+module.exports={
+    checkIfSlotIsValid
 }
 
-console.log(checkIfSlotIsValid(slots, slot))
 
 //console.log(getDay('Sunday'))

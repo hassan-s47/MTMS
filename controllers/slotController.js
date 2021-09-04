@@ -1,16 +1,19 @@
 const Student = require('../models/student'); 
 const Slot = require('../models/slot')
 const nodemailer = require('nodemailer');
+const musicClass=require('../models/class');
+const { render } = require('ejs');
+const timeTables =require('./timeTable')
 const requestAvailablity=(req,res)=>{
 
 
-    Student.find({},(err, studentList)=>{
+    Student.find({class:req.body.class},(err, studentList)=>{
         if (err) { 
             console.log(err); 
         } 
         else { 
             studentList.forEach(student => {
-                sendMail(req.body.message,student._id ,student.email)
+                sendMail(req.body.subject,req.body.message,student._id ,student.email,req.body.class)
                });
                res.render('dashboard')
         } 
@@ -19,20 +22,45 @@ const requestAvailablity=(req,res)=>{
 
 
 }
+const getWeekSlots=async(classID)=>{
+    const weekSlot={}
+    weekSlot["Monday"]= await Slot.find({day:"Monday",class:classID})
+    weekSlot["Tuesday"]=await Slot.find({day:"Tuesday",class:classID})
+    weekSlot["Wednesday"]=await Slot.find({day:"Wednesday",class:classID})
+    weekSlot["Thursday"]=await Slot.find({day:"Thursday",class:classID})
+    weekSlot["Friday"]= await  Slot.find({day:"Friday",class:classID})
+    weekSlot["Saturday"]= await Slot.find({day:"Saturday",class:classID})
+    weekSlot["Sunday"]=await  Slot.find({day:"Sunday",class:classID})
 
-const getSlotForm = async (req,res)=>{
-  result = await  Slot.findOne({student:req.params.id});
-  console.log(result);
-        if(result == null)
-        {
-            res.render('slotForm',{id:req.params.id})
-        }
-        else
-        {
-            res.render('dashboard');
-        }   
+    return weekSlot
 }
-async function sendMail(message,studentID,receiver) {
+const getSlotForm = async (req,res)=>{
+    if(req.params.id && req.params.classID){
+        const {classID,id}=req.params
+   isStudent=await Student.find({_id:req.params.id})
+   console.log(isStudent)
+   if(isStudent.length>0)
+   {
+        isAlreadyRegistered=await Slot.findOne({student:req.params.id})
+        console.log(isAlreadyRegistered)
+        if(!isAlreadyRegistered)
+        {   weekData=await getWeekSlots(classID)
+            console.log(weekData)
+            res.render('slotForm',{id:id,classID:classID,weekData:weekData})
+
+        }else{
+            res.render("responseSubmitted")
+        }
+
+
+   }else{
+       console.log("Student Not Registered!")
+   }
+    
+        
+}
+}
+async function sendMail(subject,message,studentID,receiver,classID) {
     const output=`<head>
     <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>
 </head>
@@ -47,6 +75,8 @@ async function sendMail(message,studentID,receiver) {
         }
         a , h2 {
             color: #6534ff;
+            border: 1px;
+            padding:5px;
         }
         p {
             margin-top: 5px;
@@ -82,7 +112,7 @@ async function sendMail(message,studentID,receiver) {
                                     <tr>
                                         <td width='100%' align='left' style='padding-bottom:20px;'>
                                             <div>
-                                                <a href='http://localhost:3000/slotForm/${studentID}'>Send Response</a>
+                                                <a href='http://localhost:3000/slotForm/${studentID}&${classID}'>Send Response</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -115,8 +145,8 @@ async function sendMail(message,studentID,receiver) {
              let result = await transporter.sendMail({
               from: '"Abdullah Aslam 👻" <abdullahaslammatrix@gmail.com>', // sender address
               to: receiver, // list of receivers
-              subject: "TEST", //✔", // Subject line
-              text: "Hello world?", // plain text body
+              subject: subject, //✔", // Subject line
+              text: message, // plain text body
               html: output, // html body
             }).then( (resutlt) => {
               console.log(resutlt);
@@ -149,10 +179,104 @@ const slotPost = async(req,res) => {
     // })
     
 }
+const blockSlot=(req,res)=>{
 
+    musicClass.find({teacher:req.session.user})
+    .then((response) => {
+        
+        Slot.find({teacher:req.session.user,status:"BLOCK"})
+        .then(slots=>{
+            console.log(slots)
+            res.render('blockSlots',{classes:response,slot:slots})
+        })
+    })
+    .catch(err=>{
+        console.log(err.message)
+    })
+}
+
+const getAvaiablityPage=(req,res)=>{
+    musicClass.find({teacher:req.session.user})
+    .then((response) => {
+        res.render('getAvailabilityData',{classes:response})
+    })
+}
+const addSlot=(req,res)=>{
+
+    const newSlot= new Slot({
+        teacher:req.session.user,
+        class:req.body.class,
+        day:req.body.day,
+        startTime:req.body.startTime,
+        endTime:req.body.endTime,
+        status:"BLOCK"
+    })
+
+    newSlot.save()
+    .then(success=>{
+        res.redirect('/blockSlot')
+    })
+    .catch(err=>{
+            console.log("error")
+    })
+
+}
+const saveStudentSlot=(req,res)=>{
+    const newSlot= new Slot({
+        student:req.session.studentID,
+        class:req.body.classID,
+        day:req.body.day,
+        startTime:req.body.startTime,
+        endTime:req.body.endTime,
+        status:"TAKEN"
+    })
+    newSlot.save()
+    .then(success=>{
+        res.render('internalServer')
+    })
+    .catch(err=>{
+        console.log('Something Went Wrong')
+
+    })
+}
+
+const deleteSlot=(req,res)=>{
+
+    Slot.findByIdAndDelete(req.params.id)
+    .then(sucess=>{
+        res.redirect('/blockSlot')
+    })
+    .catch(err=>{
+        console.log(err.message)
+    })
+}
+
+const verifySlot=(req,res)=>{
+    
+    const requestedSlot={
+        startTime:req.body.startTime,
+        endTime:req.body.endTime,
+        day:req.body.day
+    }
+    Slot.find({class:req.body.classID},{startTime:1,endTime:1,day:1})
+    .then(slots=>{
+    console.log(slots)
+    console.log(requestedSlot)
+    const ifvalid=timeTables.checkIfSlotIsValid(slots,requestedSlot)
+    console.log(ifvalid)
+    res.json({status: ifvalid})
+    })
+
+
+}
 module.exports={
 requestAvailablity,
 getSlotForm,
-slotPost
-
+slotPost,
+blockSlot,
+addSlot,
+deleteSlot,
+getAvaiablityPage,
+verifySlot,
+saveStudentSlot
 }
