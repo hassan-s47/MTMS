@@ -9,14 +9,20 @@ const env = require('./config/env');
 // express app
 const app = express();
 
-mongoose.connect(env.dburi,{useNewUrlParser:true,useUnifiedTopology : true,useFindAndModify: false })
-.then((result) => {
-  app.listen(PORT);
-  console.log('Connection established to Database.');
-})
-.catch((err) => {
-  console.log(err);
-});
+mongoose.connect(env.dburi,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false
+  }
+)
+  .then((result) => {
+    app.listen(PORT);
+    console.log('Connection established to Database.');
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 // listen for requests
 
 // register view engine
@@ -26,13 +32,13 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(methodOverride('_method'));
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
   next();
 });
 
 
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
   console.log('new request made:');
@@ -48,20 +54,20 @@ app.use((req, res, next) => {
 });
 
 app.use(session({
-  cookie:{
-  maxAge: 30 * 86400 * 1000,
-  sameSite: true,
-  secure: env.environment === 'production',
+  cookie: {
+    maxAge: 30 * 86400 * 1000,
+    sameSite: true,
+    secure: env.environment === 'production',
   },
-  name : env.SESSION_NAME,
-  resave : false,
-  saveUninitialized : false,
+  name: env.SESSION_NAME,
+  resave: false,
+  saveUninitialized: false,
   secret: env.SESSION_SECRET,
 }));
 
-app.use('/',indexRoutes);
+app.use('/', indexRoutes);
 
 // 404 page
 app.use((req, res) => {
-  res.status(404).json({ fname: '404',lname:'Page' });
+  res.status(404).json({ fname: '404', lname: 'Page' });
 });

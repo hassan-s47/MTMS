@@ -1,0 +1,192 @@
+<%- include("./header.ejs") %>
+<ul class="list-inline menu-left mb-0">
+    <li class="list-inline-item">
+        <button type="button" class="button-menu-mobile open-left waves-effect">
+            <i class="ion-navicon"></i>
+        </button>
+    </li>
+    <li class="hide-phone list-inline-item app-search">
+        <h3 class="page-title">Lesson</h3>
+    </li>
+</ul>
+
+<div class="clearfix"></div>
+
+</nav>
+
+</div>
+
+<div class="page-content-wrapper ">
+
+    <div class="container-fluid">
+        <div class="row" >
+            <div class="col-md-4"><label>Student Name: </label> <b>Abdullah Aslam</b></div>
+            <div class="col-md-3"><label>Status: </label><b>Active</b></div>
+            <div class="col-md-5"> 
+                <div class="form-group row">
+                    <label for="example-email-input" class="col-sm-4 col-form-label">Mark Attendence:</label>
+                    <div class="col-sm-8">
+                        <Select class="form-control"> 
+                            <option>Present</option>
+                            <option>Absent</option>
+                        </Select>
+                    </div>
+                </div>
+             </div>
+        </div>
+        <div class="row" >
+            <div class="col-lg-6">
+                <div class="card m-b-20">
+                    <div class="card-body">
+
+                        <h4 class="mt-0 header-title">Lesson Remarks</h4>
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-pills nav-justified" role="tablist">
+                            <li class="nav-item waves-effect waves-light">
+                                <a class="nav-link active" data-toggle="tab" href="#home-1" role="tab">Current Remarks</a>
+                            </li>
+                            <li class="nav-item waves-effect waves-light">
+                                <a class="nav-link" data-toggle="tab" href="#profile-1" role="tab">Previous Remarks</a>
+                            </li>
+                
+                        </ul>
+
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div class="tab-pane active p-3" id="home-1" role="tabpanel">
+                                <div class="form-group">
+                                    <label>Enter Remarks</label>
+                                    <div>
+                                        <textarea required class="form-control" rows="5"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane p-3" id="profile-1" role="tabpanel">
+                                <h3>Previous Lecture Remarks</h3>
+                                <p class="font-14 mb-0">
+                                    Food truck fixie locavore, accusamus mcsweeney's marfa nulla
+                                    single-origin coffee squid. Exercitation +1 labore velit, blog
+                                    sartorial PBR leggings next level wes anderson artisan four loko
+                                    farm-to-table craft beer twee. Qui photo booth letterpress,
+                                    commodo enim craft beer mlkshk aliquip jean shorts ullamco ad
+                                    vinyl cillum PBR. Homo nostrud organic, assumenda labore
+                                    aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr,
+                                    vero magna velit sapiente labore stumptown. Vegan fanny pack
+                                    odio cillum wes anderson 8-bit.
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+<div class="col-md-6">
+                                    <div class="card m-b-20">
+                                        <div class="card-body">
+
+                                            <h4 class="mt-0 header-title">Songs</h4>
+                                        
+                                            <div id="accordion">
+                                                <div class="card">
+                                                    <div class="card-header" id="headingOne">
+                                                        <h5 class="mb-0 mt-0 font-16">
+                                                            <a data-toggle="collapse" data-parent="#accordion"
+                                                               href="#collapseOne" aria-expanded="true"
+                                                               aria-controls="collapseOne" class="text-dark">
+                                                                Current Song
+                                                            </a>
+                                                        </h5>
+                                                    </div>
+
+                                                    <div id="collapseOne" class="collapse show"
+                                                         aria-labelledby="headingOne" data-parent="#accordion">
+                                                        <div class="card-body">
+                                                            Anim pariatur cliche reprehenderit, enim eiusmod high life
+                                                            accusamus terry richardson ad squid. 3 wolf moon officia
+                                                            aute, non cupidatat skateboard dolor brunch. Food truck
+                                                            quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
+                                                            sunt aliqua put a bird on it squid single-origin coffee
+                                                            nulla assumenda shoreditch et. Nihil anim keffiyeh
+                                                            helvetica, craft beer labore wes anderson cred nesciunt
+                                                            sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+                                                            Leggings occaecat craft beer farm-to-table, raw denim
+                                                            aesthetic synth nesciunt you probably haven't heard of them
+                                                            accusamus labore sustainable VHS.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card">
+                                                    <div class="card-header" id="headingTwo">
+                                                        <h5 class="mb-0 mt-0 font-16">
+                                                            <a class="collapsed text-dark" data-toggle="collapse"
+                                                               data-parent="#accordion" href="#collapseTwo"
+                                                               aria-expanded="false" aria-controls="collapseTwo">
+                                                                Previous Song
+                                                            </a>
+                                                        </h5>
+                                                    </div>
+                                                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                        <div class="card-body">
+                                                            Anim pariatur cliche reprehenderit, enim eiusmod high life
+                                                            accusamus terry richardson ad squid. 3 wolf moon officia
+                                                            aute, non cupidatat skateboard dolor brunch. Food truck
+                                                            quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
+                                                            sunt aliqua put a bird on it squid single-origin coffee
+                                                            nulla assumenda shoreditch et. Nihil anim keffiyeh
+                                                            helvetica, craft beer labore wes anderson cred nesciunt
+                                                            sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+                                                            Leggings occaecat craft beer farm-to-table, raw denim
+                                                            aesthetic synth nesciunt you probably haven't heard of them
+                                                            accusamus labore sustainable VHS.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card">
+                                                    <div class="card-header" id="headingThree">
+                                                        <h5 class="mb-0 mt-0 font-16">
+                                                            <a class="collapsed text-dark" data-toggle="collapse"
+                                                               data-parent="#accordion" href="#collapseThree"
+                                                               aria-expanded="false" aria-controls="collapseThree">
+                                                                Presented but declined.
+                                                            </a>
+                                                        </h5>
+                                                    </div>
+                                                    <div id="collapseThree" class="collapse"
+                                                         aria-labelledby="headingThree" data-parent="#accordion">
+                                                        <div class="card-body">
+                                                            Anim pariatur cliche reprehenderit, enim eiusmod high life
+                                                            accusamus terry richardson ad squid. 3 wolf moon officia
+                                                            aute, non cupidatat skateboard dolor brunch. Food truck
+                                                            quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
+                                                            sunt aliqua put a bird on it squid single-origin coffee
+                                                            nulla assumenda shoreditch et. Nihil anim keffiyeh
+                                                            helvetica, craft beer labore wes anderson cred nesciunt
+                                                            sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+                                                            Leggings occaecat craft beer farm-to-table, raw denim
+                                                            aesthetic synth nesciunt you probably haven't heard of them
+                                                            accusamus labore sustainable VHS.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    
+                                </div> 
+
+
+    </div><!-- container-fluid -->
+    <div  class="row">
+        <div class="col-md-6">
+            <h4>Concert</h4>
+        </div>
+        <div class="col-md-6"></div>
+    </div>
+    </div>
+
+</div>
+
+
+
+<%- include("./footer.ejs") %>

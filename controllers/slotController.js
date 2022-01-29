@@ -1,67 +1,68 @@
-const Student = require('../models/student'); 
-const Slot = require('../models/slot')
-const nodemailer = require('nodemailer');
-const musicClass=require('../models/class');
-const { render } = require('ejs');
-const timeTables =require('./timeTable')
-const requestAvailablity=(req,res)=>{
+const Student = require("../models/student");
+const Slot = require("../models/slot");
+const nodemailer = require("nodemailer");
+const musicClass = require("../models/class");
+const { render } = require("ejs");
+const timeTables = require("./timeTable");
+const requestAvailablity = (req, res) => {
+  Student.find({ class: req.body.class }, (err, studentList) => {
+    if (err) {
+      console.log(err);
+    } else {
+      studentList.forEach((student) => {
+        sendMail(
+          req.body.subject,
+          req.body.message,
+          student._id,
+          student.email,
+          req.body.class
+        );
+      });
+      res.render("dashboard");
+    }
+  });
+};
+const getWeekSlots = async (teacherID) => {
+  const weekSlot = {};
+  weekSlot["Monday"] = await Slot.find({ day: "Monday", teacher: teacherID});
+  weekSlot["Tuesday"] = await Slot.find({ day: "Tuesday", teacher: teacherID });
+  weekSlot["Wednesday"] = await Slot.find({ day: "Wednesday", teacher: teacherID });
+  weekSlot["Thursday"] = await Slot.find({ day: "Thursday", teacher: teacherID });
+  weekSlot["Friday"] = await Slot.find({ day: "Friday", teacher: teacherID });
+  weekSlot["Saturday"] = await Slot.find({ day: "Saturday", teacher: teacherID });
+  weekSlot["Sunday"] = await Slot.find({ day: "Sunday", teacher: teacherID });
 
-
-    Student.find({class:req.body.class},(err, studentList)=>{
-        if (err) { 
-            console.log(err); 
-        } 
-        else { 
-            studentList.forEach(student => {
-                sendMail(req.body.subject,req.body.message,student._id ,student.email,req.body.class)
-               });
-               res.render('dashboard')
-        } 
-    })
-  
-
-
-}
-const getWeekSlots=async(classID)=>{
-    const weekSlot={}
-    weekSlot["Monday"]= await Slot.find({day:"Monday",class:classID})
-    weekSlot["Tuesday"]=await Slot.find({day:"Tuesday",class:classID})
-    weekSlot["Wednesday"]=await Slot.find({day:"Wednesday",class:classID})
-    weekSlot["Thursday"]=await Slot.find({day:"Thursday",class:classID})
-    weekSlot["Friday"]= await  Slot.find({day:"Friday",class:classID})
-    weekSlot["Saturday"]= await Slot.find({day:"Saturday",class:classID})
-    weekSlot["Sunday"]=await  Slot.find({day:"Sunday",class:classID})
-
-    return weekSlot
-}
-const getSlotForm = async (req,res)=>{
-    if(req.params.id && req.params.classID){
-        const {classID,id}=req.params
-   isStudent=await Student.find({_id:req.params.id})
-   console.log(isStudent)
-   if(isStudent.length>0)
-   {
-        isAlreadyRegistered=await Slot.findOne({student:req.params.id})
-        console.log(isAlreadyRegistered)
-        if(!isAlreadyRegistered)
-        {   weekData=await getWeekSlots(classID)
-            console.log(weekData)
-            res.render('slotForm',{id:id,classID:classID,weekData:weekData})
-
-        }else{
-            res.render("responseSubmitted")
-        }
-
-
-   }else{
-       console.log("Student Not Registered!")
-   }
-    
-        
-}
-}
-async function sendMail(subject,message,studentID,receiver,classID) {
-    const output=`<head>
+  return weekSlot;
+};
+const getSlotForm = async (req, res) => {
+  if (req.params.id && req.params.classID) {
+    const { classID, id } = req.params;
+    isStudent = await Student.find({ _id: req.params.id });
+    console.log(isStudent);
+    if (isStudent.length > 0) {
+      isAlreadyRegistered = await Slot.findOne({
+        student: req.params.id,
+        class: classID,
+      });
+      console.log(isAlreadyRegistered);
+      if (!isAlreadyRegistered) {
+        weekData = await getWeekSlots(req.session.user);
+        console.log(weekData);
+        res.render("slotForm", {
+          id: id,
+          classID: classID,
+          weekData: weekData,
+        });
+      } else {
+        res.render("responseSubmitted");
+      }
+    } else {
+      console.log("Student Not Registered!");
+    }
+  }
+};
+async function sendMail(subject, message, studentID, receiver, classID) {
+  const output = `<head>
     <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>
 </head>
 <body style='font-family:Verdana;background:#f2f2f2;color:#606060;'>
@@ -129,154 +130,194 @@ async function sendMail(subject,message,studentID,receiver,classID) {
         </tr>
     </table>
 </body>
-        `
-        ;
-   
-    let transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 587,
-        secure: false, // true for 465, false for other ports
-        auth: {
-          user: 'abdullahaslammatrix@gmail.com', // email address
-          pass: '4321Abdullah', // generated ethereal password
-        },
-      });
-             // send mail with defined transport object
-             let result = await transporter.sendMail({
-              from: '"Abdullah Aslam 👻" <abdullahaslammatrix@gmail.com>', // sender address
-              to: receiver, // list of receivers
-              subject: subject, //✔", // Subject line
-              text: message, // plain text body
-              html: output, // html body
-            }).then( (resutlt) => {
-              console.log(resutlt);
-              return true;
-            })
-            return result; 
+        `;
+  let transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: "abdullahaslammatrix@gmail.com", // email address
+      pass: "4321Abdullah", // generated ethereal password
+    },
+  });
+  // send mail with defined transport object
+  let result = await transporter
+    .sendMail({
+      from: '"Abdullah Aslam 👻" <abdullahaslammatrix@gmail.com>', // sender address
+      to: receiver, // list of receivers
+      subject: subject, //✔", // Subject line
+      text: message, // plain text body
+      html: output, // html body
+    })
+    .then((resutlt) => {
+      console.log(resutlt);
+      return true;
+    });
+  return result;
 }
 
-const slotPost = async(req,res) => {
+const slotPost = async (req, res) => {
+  slots = await Slot.find();
+  console.log(slots);
 
-    slots = await Slot.find();
-    console.log(slots);
-    
+  // slot = new Slot(
+  //     {
+  //         teacher: req.session.user,
+  //         student: req.body.studentID,
+  //         startTime: req.body.startTime,
+  //         endTime: req.body.endTime,
+  //         day: req.body.day
+  //     }
+  // );
 
-    // slot = new Slot(
-    //     {
-    //         teacher: req.session.user,
-    //         student: req.body.studentID,
-    //         startTime: req.body.startTime,
-    //         endTime: req.body.endTime,
-    //         day: req.body.day
-    //     }
-    // );
-
-    // slot.save().then((result) => {
-    //     res.redirect('/dashboard');
-    // })
-    // .catch((error) => {
-    //     console.log(error);
-    // })
-    
-}
-const blockSlot=(req,res)=>{
-
-    musicClass.find({teacher:req.session.user})
+  // slot.save().then((result) => {
+  //     res.redirect('/dashboard');
+  // })
+  // .catch((error) => {
+  //     console.log(error);
+  // })
+};
+const blockSlot = (req, res) => {
+  musicClass
+    .find({ teacher: req.session.user })
     .then((response) => {
-        
-        Slot.find({teacher:req.session.user,status:"BLOCK"})
-        .then(slots=>{
-            console.log(slots)
-            res.render('blockSlots',{classes:response,slot:slots})
-        })
+      Slot.find({ teacher: req.session.user, status: "BLOCK" }).then(
+        (slots) => {
+          console.log(slots);
+          res.render("blockSlots", { classes: response, slot: slots });
+        }
+      );
     })
-    .catch(err=>{
-        console.log(err.message)
-    })
-}
+    .catch((err) => {
+      console.log(err.message);
+    });
+};
 
-const getAvaiablityPage=(req,res)=>{
-    musicClass.find({teacher:req.session.user})
-    .then((response) => {
-        res.render('getAvailabilityData',{classes:response})
-    })
-}
-const addSlot=(req,res)=>{
+const getAvaiablityPage = (req, res) => {
+  musicClass.find({ teacher: req.session.user }).then((response) => {
+    res.render("getAvailabilityData", { classes: response });
+  });
+};
+const addSlot = (req, res) => {
+  const newSlot = new Slot({
+    teacher: req.session.user,
+    class: req.body.class,
+    day: req.body.day,
+    startTime: req.body.startTime,
+    endTime: req.body.endTime,
+    status: "BLOCK",
+  });
 
-    const newSlot= new Slot({
-        teacher:req.session.user,
-        class:req.body.class,
-        day:req.body.day,
-        startTime:req.body.startTime,
-        endTime:req.body.endTime,
-        status:"BLOCK"
+  newSlot
+    .save()
+    .then((success) => {
+      res.redirect("/blockSlot");
     })
+    .catch((err) => {
+      console.log("error");
+    });
+};
+const saveStudentSlot = (req, res) => {
+  const newSlot = new Slot({
+    teacher: req.session.user,
+    student: req.body.studentID,
+    class: req.body.classID,
+    day: req.body.day,
+    startTime: req.body.startTime,
+    endTime: req.body.endTime,
+    status: "TAKEN",
+  });
+  newSlot
+    .save()
+    .then((success) => {
+      res.render("dashboard");
+    })
+    .catch((err) => {
+      console.log("internalServer");
+    });
+};
 
-    newSlot.save()
-    .then(success=>{
-        res.redirect('/blockSlot')
+const deleteSlot = (req, res) => {
+  Slot.findByIdAndDelete(req.params.id)
+    .then((sucess) => {
+      res.redirect("/blockSlot");
     })
-    .catch(err=>{
-            console.log("error")
-    })
+    .catch((err) => {
+      console.log(err.message);
+    });
+};
 
-}
-const saveStudentSlot=(req,res)=>{
-    const newSlot= new Slot({
-        student:req.session.studentID,
-        class:req.body.classID,
-        day:req.body.day,
-        startTime:req.body.startTime,
-        endTime:req.body.endTime,
-        status:"TAKEN"
-    })
-    newSlot.save()
-    .then(success=>{
-        res.render('internalServer')
-    })
-    .catch(err=>{
-        console.log('Something Went Wrong')
+const verifySlot = (req, res) => {
+  if (verifyData(req)) {
+    const requestedSlot = {
+      startTime: req.body.startTime,
+      endTime: req.body.endTime,
+      day: req.body.day,
+    };
+    Slot.find({ teacher: req.session.user }).then((slots) => {
+      console.log(slots);
+      console.log(requestedSlot);
+      const ifvalid = timeTables.checkIfSlotIsValid(slots, requestedSlot);
+      console.log(ifvalid);
+      res.json({ status: ifvalid });
+    });
+  }
+  console.log(req.body);
+};
 
-    })
-}
-
-const deleteSlot=(req,res)=>{
-
-    Slot.findByIdAndDelete(req.params.id)
-    .then(sucess=>{
-        res.redirect('/blockSlot')
-    })
-    .catch(err=>{
-        console.log(err.message)
-    })
-}
-
-const verifySlot=(req,res)=>{
-    
-    const requestedSlot={
-        startTime:req.body.startTime,
-        endTime:req.body.endTime,
-        day:req.body.day
+const getDay = function(day) 
+{
+    switch(day){
+        case 'Monday': return 0;
+        case 'Tuesday': return 1;
+        case 'Wednesday': return 2;
+        case 'Thursday': return 3;
+        case 'Friday': return 4;
+        case 'Saturday': return 5;
+        case 'Sunday': return 6;
     }
-    Slot.find({class:req.body.classID},{startTime:1,endTime:1,day:1})
-    .then(slots=>{
-    console.log(slots)
-    console.log(requestedSlot)
-    const ifvalid=timeTables.checkIfSlotIsValid(slots,requestedSlot)
-    console.log(ifvalid)
-    res.json({status: ifvalid})
-    })
-
 
 }
-module.exports={
-requestAvailablity,
-getSlotForm,
-slotPost,
-blockSlot,
-addSlot,
-deleteSlot,
-getAvaiablityPage,
-verifySlot,
-saveStudentSlot
-}
+
+const verifyData = (req) => {
+  day = req.body.day;
+  if (!day) return false;
+  day = getDay(day);
+  try {
+      s = req.body.startTime
+      e = req.body.endTime
+  start =
+    parseInt(s.split(":")[0]) * 60 +
+    parseInt(s.split(":")[1]) +
+    day * 1440;
+  end =
+    parseInt(e.split(":")[0]) * 60 +
+    parseInt(e.split(":")[1]) +
+    day * 1440;
+    if (start % 5 != 0 || end % 5 != 0) {
+        return false;
+    }
+    return true;
+  }
+  catch(e)
+  {
+      return false
+  }
+};
+
+const getSlotsForTeacher = async (req, res) => {
+  result = Slot.find({ teacher: req.session.user });
+  console.log(result);
+};
+module.exports = {
+  requestAvailablity,
+  getSlotForm,
+  slotPost,
+  blockSlot,
+  addSlot,
+  deleteSlot,
+  getAvaiablityPage,
+  verifySlot,
+  saveStudentSlot,
+  getSlotsForTeacher,
+};

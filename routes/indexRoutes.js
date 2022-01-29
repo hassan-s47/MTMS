@@ -6,6 +6,8 @@ const concertController = require('../controllers/concertController');
 const studentController = require('../controllers/studentController');
 const slotController = require('../controllers/slotController');
 const calenderController = require('../controllers/calenderController');
+const routineController = require('../controllers/routineController');
+const lessonController = require('../controllers/lessonController');
 const router = express.Router();
 
 const redirectLogin = (req, res, next) => {
@@ -19,11 +21,6 @@ const redirectLogin = (req, res, next) => {
   }
 
 router.post('/addStudent',redirectLogin, studentController.upload.single('img'),studentController.addStudent)
-
-
-
-
-
 router.get('/teacher',redirectLogin,(req, res)=>{
     res.render('teacher')
 })
@@ -95,6 +92,8 @@ router.get('/recoverPassword',(req,res)=>{
 })
 router.get('/create-new-password/:id',loginController.createNewPassword)
 router.post('resetPassword',loginController.resetPassword)
-
 router.post('/sendPasswordChanageRequest',loginController.sendPasswordChangeRequest)
+router.get('/routine/:id',redirectLogin,routineController.loadRoutinePage)
+router.get('/lesson/:id', lessonController.loadLessonPage)
+
 module.exports = router;
