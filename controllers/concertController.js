@@ -1,51 +1,46 @@
-const Concert = require('../models/concert'); 
-const Student = require('../models/student'); 
 const nodemailer = require('nodemailer');
-const loadConcertPage = async (req, res) => {
-    
-    Student.find().select('name')
-    .then((result) => {
-        console.log(result);
-        res.render('createConcert', {students : result});
-    })
+const Concert = require('../models/concert');
+const Student = require('../models/student');
 
-}
+const loadConcertPage = async (req, res) => {
+  Student.find().select('name')
+    .then((result) => {
+      console.log(result);
+      res.render('createConcert', { students: result });
+    });
+};
 
 const addConcert = async (req, res) => {
-    mystudent=req.body.studentid
-    
-   const concert=new Concert({
-        teacher: req.session.user,
-        title :req.body.title,
-        location:req.body.location,
-        dates:req.body.dates,
-        startTime:req.body.startTime,
-        endTime:req.body.endTime,
-        comments :req.body.commentar,
-        students:mystudent
-                            
-    })
-   concert.save()
-   .then((response) =>{
-      mystudent.forEach(student => {
-          Student.findById(student)
-          .then((results)=>{
+  mystudent = req.body.studentid;
+
+  const concert = new Concert({
+    teacher: req.session.user,
+    title: req.body.title,
+    location: req.body.location,
+    dates: req.body.dates,
+    startTime: req.body.startTime,
+    endTime: req.body.endTime,
+    comments: req.body.commentar,
+    students: mystudent,
+
+  });
+  concert.save()
+    .then((response) => {
+      mystudent.forEach((student) => {
+        Student.findById(student)
+          .then((results) => {
           //  sendMail(results.email,req.body.title,req.body.location,req.body.dates)
-          })
+          });
+      });
 
-
-      })
-
-      res.redirect('/createConcert')
-
-      
-   })
-   .catch((err) =>{
-       console.error(err)
-   })
-}
-async function sendMail(email,title,location,date,comments) {
-    const output=`<head>
+      res.redirect('/createConcert');
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+};
+async function sendMail(email, title, location, date, comments) {
+  const output = `<head>
     <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>
 </head>
 <body style='font-family:Verdana;background:#f2f2f2;color:#606060;'>
@@ -127,101 +122,92 @@ async function sendMail(email,title,location,date,comments) {
         </tr>
     </table>
 </body>
-        `
-        ;
-   
-    let transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 587,
-        secure: false, // true for 465, false for other ports
-        auth: {
-          user: 'abdullahaslammatrix@gmail.com', // email address
-          pass: '4321Abdullah', // generated ethereal password
-        },
-      });
-             // send mail with defined transport object
-             let result = await transporter.sendMail({
-              from: '"Abdullah Aslam 👻" <abdullahaslammatrix@gmail.com>', // sender address
-              to: email, // list of receivers
-              subject: "MTMS Concert Creator", //✔", // Subject line
-              text: "Hello world?", // plain text body
-              html: output, // html body
-            }).then( (resutlt) => {
-              console.log(resutlt);
-              return true;
-            })
-            return result; 
+        `;
+  const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: 'abdullahaslammatrix@gmail.com', // email address
+      pass: '4321Abdullah', // generated ethereal password
+    },
+  });
+  // send mail with defined transport object
+  const result = await transporter.sendMail({
+    from: '"Abdullah Aslam 👻" <abdullahaslammatrix@gmail.com>', // sender address
+    to: email, // list of receivers
+    subject: 'MTMS Concert Creator', // ✔", // Subject line
+    text: 'Hello world?', // plain text body
+    html: output, // html body
+  }).then((resutlt) => {
+    console.log(resutlt);
+    return true;
+  });
+  return result;
 }
 
-const viewConcert=async (req, res) => {
-    Concert.find({}, (err, items)=>{
-        if (err) { 
-            console.log(err); 
-        } 
-        else { 
-            // console.log(items);
-            res.render('manageConcerts', { items: items }); 
-        } 
-    })
-
-}
-const editConcert=async(req, res)=>{
-    concertid=req.params.id;
-    Concert.findById(concertid)
-    .then((results)=>{
-        console.log(results)
-        Student.find({})
+const viewConcert = async (req, res) => {
+  Concert.find({}, (err, items) => {
+    if (err) {
+      console.log(err);
+    } else {
+      // console.log(items);
+      res.render('manageConcerts', { items });
+    }
+  });
+};
+const editConcert = async (req, res) => {
+  concertid = req.params.id;
+  Concert.findById(concertid)
+    .then((results) => {
+      console.log(results);
+      Student.find({})
         .then((result) => {
-            
-            res.render('editConcert', {students : result,concertData:results});
-        })
+          res.render('editConcert', { students: result, concertData: results });
+        });
+    });
+};
+const updateConcert = async (req, res) => {
+  concertid = req.body.concertid;
+  mystudent = req.body.studentid;
+  Concert.findByIdAndUpdate({ _id: concertid }, {
+    title: req.body.title,
+    location: req.body.location,
+    dates: req.body.dates,
+    comments: req.body.commentar,
+    students: mystudent,
 
-    })
-}
-const updateConcert =async (req, res) =>{
-    concertid=req.body.concertid
-    mystudent=req.body.studentid
-    Concert.findByIdAndUpdate({_id:concertid},{
-        title :req.body.title,
-        location:req.body.location,
-        dates:req.body.dates,
-        comments :req.body.commentar,
-        students:mystudent
-
-    })
-    .then((result) =>{
-
-        res.redirect('/concert')
-    })
-    .catch((err) =>{
-
-        console.log(err)
-    })
-}
-const deleteConcert=async (req, res) => {
-    Concert.findByIdAndRemove(req.params.id)
+  })
     .then((result) => {
-       
-        res.redirect('/concert');})
-    .catch((err) => {console.log(err);  res.redirect('/concert');})
-}
-const getAllConcert= async (req,res)=>{
-    Concert.find({}, (err, items)=>{
-        if (err) { 
-            console.log(err); 
-        } 
-        else { 
-            res.json({msg: "Success", data: items});
-        } 
+      res.redirect('/concert');
     })
-}
+    .catch((err) => {
+      console.log(err);
+    });
+};
+const deleteConcert = async (req, res) => {
+  Concert.findByIdAndRemove(req.params.id)
+    .then((result) => {
+      res.redirect('/concert');
+    })
+    .catch((err) => { console.log(err); res.redirect('/concert'); });
+};
+const getAllConcert = async (req, res) => {
+  Concert.find({}, (err, items) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json({ msg: 'Success', data: items });
+    }
+  });
+};
 
 module.exports = {
-    loadConcertPage,
-    addConcert,
-    viewConcert,
-    editConcert,
-    updateConcert,
-    deleteConcert,
-    getAllConcert
-}
+  loadConcertPage,
+  addConcert,
+  viewConcert,
+  editConcert,
+  updateConcert,
+  deleteConcert,
+  getAllConcert,
+};

@@ -1,11 +1,12 @@
-const Student = require("../models/student");
-const Slot = require("../models/slot");
-const nodemailer = require("nodemailer");
-const musicClass = require("../models/class");
-const { render } = require("ejs");
-const timeTables = require("./timeTable");
+const nodemailer = require('nodemailer');
+const { render } = require('ejs');
+const Student = require('../models/student');
+const Slot = require('../models/slot');
+const musicClass = require('../models/class');
+const timeTables = require('./timeTable');
+
 const requestAvailablity = (req, res) => {
-  Student.find({ class: req.body.class }, (err, studentList) => {
+  Student.find({ 'class': req.body.class }, (err, studentList) => {
     if (err) {
       console.log(err);
     } else {
@@ -15,22 +16,22 @@ const requestAvailablity = (req, res) => {
           req.body.message,
           student._id,
           student.email,
-          req.body.class
+          req.body.class,
         );
       });
-      res.render("dashboard");
+      res.render('dashboard');
     }
   });
 };
 const getWeekSlots = async (teacherID) => {
   const weekSlot = {};
-  weekSlot["Monday"] = await Slot.find({ day: "Monday", teacher: teacherID});
-  weekSlot["Tuesday"] = await Slot.find({ day: "Tuesday", teacher: teacherID });
-  weekSlot["Wednesday"] = await Slot.find({ day: "Wednesday", teacher: teacherID });
-  weekSlot["Thursday"] = await Slot.find({ day: "Thursday", teacher: teacherID });
-  weekSlot["Friday"] = await Slot.find({ day: "Friday", teacher: teacherID });
-  weekSlot["Saturday"] = await Slot.find({ day: "Saturday", teacher: teacherID });
-  weekSlot["Sunday"] = await Slot.find({ day: "Sunday", teacher: teacherID });
+  weekSlot.Monday = await Slot.find({ day: 'Monday', teacher: teacherID });
+  weekSlot.Tuesday = await Slot.find({ day: 'Tuesday', teacher: teacherID });
+  weekSlot.Wednesday = await Slot.find({ day: 'Wednesday', teacher: teacherID });
+  weekSlot.Thursday = await Slot.find({ day: 'Thursday', teacher: teacherID });
+  weekSlot.Friday = await Slot.find({ day: 'Friday', teacher: teacherID });
+  weekSlot.Saturday = await Slot.find({ day: 'Saturday', teacher: teacherID });
+  weekSlot.Sunday = await Slot.find({ day: 'Sunday', teacher: teacherID });
 
   return weekSlot;
 };
@@ -42,22 +43,22 @@ const getSlotForm = async (req, res) => {
     if (isStudent.length > 0) {
       isAlreadyRegistered = await Slot.findOne({
         student: req.params.id,
-        class: classID,
+        'class': classID,
       });
       console.log(isAlreadyRegistered);
       if (!isAlreadyRegistered) {
         weekData = await getWeekSlots(req.session.user);
         console.log(weekData);
-        res.render("slotForm", {
-          id: id,
-          classID: classID,
-          weekData: weekData,
+        res.render('slotForm', {
+          id,
+          classID,
+          weekData,
         });
       } else {
-        res.render("responseSubmitted");
+        res.render('responseSubmitted');
       }
     } else {
-      console.log("Student Not Registered!");
+      console.log('Student Not Registered!');
     }
   }
 };
@@ -131,21 +132,21 @@ async function sendMail(subject, message, studentID, receiver, classID) {
     </table>
 </body>
         `;
-  let transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
+  const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
     port: 587,
     secure: false, // true for 465, false for other ports
     auth: {
-      user: "abdullahaslammatrix@gmail.com", // email address
-      pass: "4321Abdullah", // generated ethereal password
+      user: 'abdullahaslammatrix@gmail.com', // email address
+      pass: '4321Abdullah', // generated ethereal password
     },
   });
   // send mail with defined transport object
-  let result = await transporter
+  const result = await transporter
     .sendMail({
       from: '"Abdullah Aslam 👻" <abdullahaslammatrix@gmail.com>', // sender address
       to: receiver, // list of receivers
-      subject: subject, //✔", // Subject line
+      subject, // ✔", // Subject line
       text: message, // plain text body
       html: output, // html body
     })
@@ -181,11 +182,11 @@ const blockSlot = (req, res) => {
   musicClass
     .find({ teacher: req.session.user })
     .then((response) => {
-      Slot.find({ teacher: req.session.user, status: "BLOCK" }).then(
+      Slot.find({ teacher: req.session.user, status: 'BLOCK' }).then(
         (slots) => {
           console.log(slots);
-          res.render("blockSlots", { classes: response, slot: slots });
-        }
+          res.render('blockSlots', { classes: response, slot: slots });
+        },
       );
     })
     .catch((err) => {
@@ -195,52 +196,52 @@ const blockSlot = (req, res) => {
 
 const getAvaiablityPage = (req, res) => {
   musicClass.find({ teacher: req.session.user }).then((response) => {
-    res.render("getAvailabilityData", { classes: response });
+    res.render('getAvailabilityData', { classes: response });
   });
 };
 const addSlot = (req, res) => {
   const newSlot = new Slot({
     teacher: req.session.user,
-    class: req.body.class,
+    'class': req.body.class,
     day: req.body.day,
     startTime: req.body.startTime,
     endTime: req.body.endTime,
-    status: "BLOCK",
+    status: 'BLOCK',
   });
 
   newSlot
     .save()
     .then((success) => {
-      res.redirect("/blockSlot");
+      res.redirect('/blockSlot');
     })
     .catch((err) => {
-      console.log("error");
+      console.log('error');
     });
 };
 const saveStudentSlot = (req, res) => {
   const newSlot = new Slot({
     teacher: req.session.user,
     student: req.body.studentID,
-    class: req.body.classID,
+    'class': req.body.classID,
     day: req.body.day,
     startTime: req.body.startTime,
     endTime: req.body.endTime,
-    status: "TAKEN",
+    status: 'TAKEN',
   });
   newSlot
     .save()
     .then((success) => {
-      res.render("dashboard");
+      res.render('dashboard');
     })
     .catch((err) => {
-      console.log("internalServer");
+      console.log('internalServer');
     });
 };
 
 const deleteSlot = (req, res) => {
   Slot.findByIdAndDelete(req.params.id)
     .then((sucess) => {
-      res.redirect("/blockSlot");
+      res.redirect('/blockSlot');
     })
     .catch((err) => {
       console.log(err.message);
@@ -265,43 +266,37 @@ const verifySlot = (req, res) => {
   console.log(req.body);
 };
 
-const getDay = function(day) 
-{
-    switch(day){
-        case 'Monday': return 0;
-        case 'Tuesday': return 1;
-        case 'Wednesday': return 2;
-        case 'Thursday': return 3;
-        case 'Friday': return 4;
-        case 'Saturday': return 5;
-        case 'Sunday': return 6;
-    }
-
-}
+const getDay = function (day) {
+  switch (day) {
+    case 'Monday': return 0;
+    case 'Tuesday': return 1;
+    case 'Wednesday': return 2;
+    case 'Thursday': return 3;
+    case 'Friday': return 4;
+    case 'Saturday': return 5;
+    case 'Sunday': return 6;
+  }
+};
 
 const verifyData = (req) => {
   day = req.body.day;
   if (!day) return false;
   day = getDay(day);
   try {
-      s = req.body.startTime
-      e = req.body.endTime
-  start =
-    parseInt(s.split(":")[0]) * 60 +
-    parseInt(s.split(":")[1]) +
-    day * 1440;
-  end =
-    parseInt(e.split(":")[0]) * 60 +
-    parseInt(e.split(":")[1]) +
-    day * 1440;
+    s = req.body.startTime;
+    e = req.body.endTime;
+    start = parseInt(s.split(':')[0]) * 60
+    + parseInt(s.split(':')[1])
+    + day * 1440;
+    end = parseInt(e.split(':')[0]) * 60
+    + parseInt(e.split(':')[1])
+    + day * 1440;
     if (start % 5 != 0 || end % 5 != 0) {
-        return false;
+      return false;
     }
     return true;
-  }
-  catch(e)
-  {
-      return false
+  } catch (e) {
+    return false;
   }
 };
 
